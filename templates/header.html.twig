@@ -1,0 +1,141 @@
+<header class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <!-- Logo -->
+        <a href="{{ path('app_home') }}" class="flex items-center space-x-3">
+            <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M11.3 1.046a.75.75 0 011.184.84L10.387 8h4.863a.75.75 0 01.612 1.188l-7 10a.75.75 0 01-1.364-.553L9.613 12H4.75a.75.75 0 01-.612-1.188l7-10a.75.75 0 01.162-.189z" clip-rule="evenodd" />
+            </svg>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">QuickEsti</span>
+        </a>
+
+        <!-- Navigation Desktop -->
+        <div class="hidden md:flex md:items-center md:space-x-8">
+            <a href="{{ path('app_home') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Accueil
+            </a>
+            <a href="{{ path('app_estimation') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Estimation <sup class="text-gradient italic text-xs">New</sup>
+            </a>
+            <a href="/#features" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Fonctionnalités
+            </a>
+            <a href="/#pricing" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Tarifs
+            </a>
+            <a href="/#faq" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Faq
+            </a>
+            {% if app.user %}
+            <a href="{{ path('quote_index') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Mes Devis
+            </a>
+            {% endif %}
+            <a href="{{ path('app_blog') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Blog
+            </a>
+        </div>
+
+        <!-- Boutons CTA Desktop -->
+        <div class="hidden md:flex items-center space-x-3">
+            {% if app.user %}
+                <a href="{{ path('app_account') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+                    Tableau de bord
+                </a>
+                <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700">
+                    Nouvelle estimation
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+                    Connexion
+                </a>
+                <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700">
+                    Essayer gratuitement
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Bouton Mobile -->
+        <button type="button" class="md:hidden inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" id="mobile-menu-button">
+            <span class="sr-only">Ouvrir le menu</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <!-- Menu Mobile -->
+        <div class="hidden w-full md:hidden" id="mobile-menu">
+            <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                <li>
+                    <a href="{{ path('app_home') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Accueil
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_estimation') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Estimation <sup class="text-gradient italic">New</sup>
+                    </a>
+                </li>
+                <li>
+                    <a href="/#features" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Fonctionnalités
+                    </a>
+                </li>
+                <li>
+                    <a href="/#pricing" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Tarifs
+                    </a>
+                </li>
+                <li>
+                    <a href="/#faq" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Faq
+                    </a>
+                </li>
+                {% if app.user %}
+                <li>
+                    <a href="{{ path('quote_index') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Mes Devis
+                    </a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="{{path('app_blog')}}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Blog
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Boutons CTA Mobile -->
+            <div class="flex flex-col space-y-2 mt-4 px-3 pb-3">
+                {% if app.user %}
+                    <a href="{{ path('app_account') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+                        Tableau de bord
+                    </a>
+                    <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700">
+                        Nouvelle estimation
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
+                        Connexion
+                    </a>
+                    <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700">
+                        Essayer gratuitement
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+// Script pour le menu mobile
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+});
+</script>

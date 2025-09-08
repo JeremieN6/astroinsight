@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil Astrologique{% endblock %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-6">Profil Astrologique</h1>
+  <p class="text-sm text-gray-500 mb-4">Renseigne tes informations de naissance pour des analyses personnalisées. Latitude/Longitude et fuseau peuvent être déterminés après géocodage futur.</p>
+
+  {% for label, messages in app.flashes %}
+    {% for m in messages %}
+      <div class="mb-4 rounded border px-4 py-3 text-sm {% if label == 'success' %}bg-green-50 border-green-200 text-green-700{% elseif label=='warning' %}bg-yellow-50 border-yellow-200 text-yellow-800{% else %}bg-blue-50 border-blue-200 text-blue-700{% endif %}">{{ m }}</div>
+    {% endfor %}
+  {% endfor %}
+
+  {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+    <div>
+      {{ form_label(form.birthDate, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.birthDate, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+      {{ form_errors(form.birthDate) }}
+    </div>
+    <div>
+      {{ form_label(form.birthTime, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.birthTime, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+      <p class="text-xs text-gray-500 mt-1">Laisse vide si inconnue (midi utilisé par défaut)</p>
+      {{ form_errors(form.birthTime) }}
+    </div>
+    <div>
+      {{ form_label(form.birthPlace, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.birthPlace, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+      {{ form_errors(form.birthPlace) }}
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        {{ form_label(form.latitude, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+        {{ form_widget(form.latitude, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+        {{ form_errors(form.latitude) }}
+      </div>
+      <div>
+        {{ form_label(form.longitude, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+        {{ form_widget(form.longitude, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+        {{ form_errors(form.longitude) }}
+      </div>
+    </div>
+    <div>
+      {{ form_label(form.timezone, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.timezone, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+      <p class="text-xs text-gray-500 mt-1">Ex: Europe/Paris</p>
+      {{ form_errors(form.timezone) }}
+    </div>
+    <div>
+      {{ form_label(form.accuracy, null, {'label_attr': {'class':'block mb-1 font-medium'}}) }}
+      {{ form_widget(form.accuracy, {'attr': {'class':'w-full border rounded px-3 py-2'}}) }}
+      {{ form_errors(form.accuracy) }}
+    </div>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">Enregistrer</button>
+  {{ form_end(form) }}
+
+  {% if profile.natalChartJson %}
+    <div class="mt-10">
+      <h2 class="text-xl font-semibold mb-2">Données brutes du thème (JSON)</h2>
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded text-xs overflow-auto">{{ profile.natalChartJson|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

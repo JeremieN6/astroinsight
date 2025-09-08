@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Horoscope du jour{% endblock %}
+{% block body %}
+<div class="max-w-4xl mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-4">Horoscope du {{ date|date('d/m/Y') }}</h1>
+  {% if not profile %}
+    <div class="p-4 bg-yellow-100 border border-yellow-300 rounded">Complète d'abord ton <a class="underline" href="{{ path('astro_profile_edit') }}">profil astrologique</a>.</div>
+  {% elseif not data %}
+    <div class="p-4 bg-red-100 border border-red-300 rounded">Impossible de générer l'horoscope pour le moment.</div>
+  {% else %}
+    <div class="grid md:grid-cols-3 gap-6 mb-6">
+      {% for key,val in data.scores %}
+        <div class="p-4 bg-white dark:bg-gray-800 rounded shadow border">
+          <div class="text-sm uppercase tracking-wide text-gray-500 mb-2">{{ key }}</div>
+          <div class="flex items-center justify-between">
+            <div class="font-semibold text-lg">{{ val }}%</n></div>
+            <div class="w-20 h-2 bg-gray-200 rounded overflow-hidden"><div class="h-2 bg-blue-600" style="width: {{ val }}%"></div></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="p-5 bg-white dark:bg-gray-800 rounded border shadow">
+      <h2 class="font-semibold mb-2">Résumé</h2>
+      <p class="leading-relaxed">{{ data.summary }}</p>
+      {% if nextTransit %}
+        <div class="mt-6 p-4 border rounded bg-blue-50 dark:bg-blue-900/30">
+          <h3 class="font-semibold mb-1">Prochain transit clé : {{ nextTransit.label }}</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">{{ nextTransit.planet }} {{ nextTransit.aspect }} {{ nextTransit.target }} • fenêtre {{ nextTransit.from|date('d/m H:i') }} → {{ nextTransit.to|date('d/m H:i') }} (pic {{ nextTransit.exact|date('d/m H:i') }})</p>
+          <p class="text-sm">{{ nextTransit.advice }}</p>
+          <div class="mt-2 w-full h-2 bg-gray-200 rounded overflow-hidden"><div class="h-2 bg-green-600" style="width: {{ nextTransit.score }}%"></div></div>
+        </div>
+      {% endif %}
+      {% if data.aspects and data.aspects is iterable and data.aspects|length > 0 %}
+        <h3 class="mt-4 font-semibold text-sm uppercase text-gray-500">Aspects clés</h3>
+        <ul class="text-sm list-disc ml-5 mt-2 space-y-1">
+          {% for a in data.aspects|slice(0,5) %}
+            <li>{{ a.planet ?? a.source ?? 'Planète' }} {{ a.aspect ?? '' }} {{ a.target ?? '' }} ({{ a.strength ?? '?' }})</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <p class="text-xs mt-4 text-gray-400">{% if from_cache %}Données en cache{% else %}Généré à la volée{% endif %} • Contenu à visée de divertissement.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
