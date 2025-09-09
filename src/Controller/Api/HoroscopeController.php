@@ -41,6 +41,7 @@ class HoroscopeController extends AbstractController
                 ->setSummary($data['summary'] ?? null)
                 ->setRawData(['aspects' => $data['aspects'] ?? []])
                 ->setInsights($data['insights'] ?? null)
+                ->setNextTransit($data['nextTransit'] ?? null)
                 ->setGeneratedAt(new DateTimeImmutable())
                 ->setFinal(false);
             $this->em->persist($entry);

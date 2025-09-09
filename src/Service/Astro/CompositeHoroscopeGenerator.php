@@ -4,6 +4,7 @@ namespace App\Service\Astro;
 use App\Entity\AstroProfile;
 use App\Service\Astro\Prokerala\ProkeralaApiClient;
 use App\Service\Astro\AspectInterpreter;
+use App\Service\Astro\NextTransitFinder;
 use DateTimeInterface;
 use Psr\Log\LoggerInterface;
 
@@ -16,6 +17,7 @@ class CompositeHoroscopeGenerator implements HoroscopeGeneratorInterface
         private ProkeralaApiClient $client,
         private AspectComputer $aspectComputer,
         private AspectInterpreter $aspectInterpreter,
+        private NextTransitFinder $nextTransitFinder,
         private LoggerInterface $logger,
     ) {}
 
@@ -44,7 +46,8 @@ class CompositeHoroscopeGenerator implements HoroscopeGeneratorInterface
 
         $internalAspects = [];
         $insights = [];
-        try {
+    $nextTransit = null;
+    try {
             if ($profile->getLatitude() && $profile->getLongitude() && $profile->getBirthDate()) {
                 $birthDt = (new \DateTimeImmutable($profile->getBirthDate()->format('Y-m-d').' '.$profile->getBirthTime()->format('H:i:s')))->setTimezone(new \DateTimeZone('UTC'));
                 $birthIso = $birthDt->format('Y-m-d\TH:i:sP');
@@ -76,6 +79,25 @@ class CompositeHoroscopeGenerator implements HoroscopeGeneratorInterface
                 }
                 if ($natalPositions && $transitPositions) {
                     $internalAspects = $this->aspectComputer->compute($natalPositions, $transitPositions);
+                    // Build future horizon (next 7 days) for next transit
+                    $future = [];
+                    for ($i=1; $i<=7; $i++) {
+                        $day = new \DateTimeImmutable('+' . $i . ' day 12:00:00 UTC');
+                        $iso = $day->format('Y-m-d\\T12:00:00P');
+                        try {
+                            $tp = $this->client->getTransitPlanetPositions($iso, 'UTC');
+                            $pos = [];
+                            foreach (($tp['data']['planet_positions'] ?? []) as $row) {
+                                if (isset($row['planet']['name'], $row['position']['longitude'])) {
+                                    $pos[strtoupper($row['planet']['name'])] = (float)$row['position']['longitude'];
+                                }
+                            }
+                            if ($pos) { $future[] = ['date' => $day, 'positions' => $pos]; }
+                        } catch (\Throwable $e) {
+                            // swallow; continue
+                        }
+                    }
+                    if ($future) { $nextTransit = $this->nextTransitFinder->find($future, $natalPositions); }
                 }
             }
         } catch (\Throwable $e) {
@@ -83,7 +105,7 @@ class CompositeHoroscopeGenerator implements HoroscopeGeneratorInterface
         }
 
         $aspects = $apiAspects ?: $internalAspects;
-        if ($aspects) { $insights = $this->aspectInterpreter->interpret($aspects); }
-        return [ 'scores' => $scores, 'summary' => $summary, 'aspects' => $aspects, 'insights' => $insights ];
+    if ($aspects) { $insights = $this->aspectInterpreter->interpret($aspects); }
+    return [ 'scores' => $scores, 'summary' => $summary, 'aspects' => $aspects, 'insights' => $insights, 'nextTransit' => $nextTransit ];
     }
 }
