@@ -172,4 +172,26 @@ class ProkeralaApiClient
             'timezone' => $timezone,
         ]);
     }
+
+    // Natal planet positions (western)
+    public function getNatalPlanetPositions(float $lat, float $lon, string $dateTimeIso, string $timezone, int $houseSystem = 2): array
+    {
+        return $this->get('/v2/astrology/natal-planet-position', [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'timezone' => $timezone,
+            'house_system' => $houseSystem,
+        ]);
+    }
+
+    // Transit planet positions (current day)
+    public function getTransitPlanetPositions(string $dateTimeIso, string $timezone, int $houseSystem = 2): array
+    {
+        // Transit does not need coordinates per spec (geocentric); if required add lat/lon.
+        return $this->get('/v2/astrology/transit-planet-position', [
+            'datetime' => $dateTimeIso,
+            'timezone' => $timezone,
+            'house_system' => $houseSystem,
+        ], 7200); // 2h TTL
+    }
 }

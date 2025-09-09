@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Repository\AstroProfileRepository;
-use App\Repository\HoroscopeCacheRepository;
+use App\Repository\DailyHoroscopeRepository;
 use App\Service\Astro\HoroscopeGeneratorInterface;
 use App\Service\Astro\TransitKeyService;
 use DateTimeImmutable;
@@ -15,16 +15,23 @@ use Symfony\Component\HttpFoundation\Response;
 class HoroscopePageController extends AbstractController
 {
     #[Route('', name: 'user_horoscope_today')]
-    public function today(AstroProfileRepository $profiles, HoroscopeCacheRepository $cacheRepo, HoroscopeGeneratorInterface $gen, TransitKeyService $transitKey, EntityManagerInterface $em): Response
+    public function today(AstroProfileRepository $profiles, DailyHoroscopeRepository $dailyRepo, HoroscopeGeneratorInterface $gen, TransitKeyService $transitKey, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
         $date = new DateTimeImmutable('today UTC');
-        $cache = null; $fromCache = false;
-        try { $cache = $cacheRepo->findForUserAndDate($user, $date, 'daily'); } catch (\Throwable $e) {}
+    $entry = null; $fromCache = false;
+    try { $entry = $dailyRepo->findOneForUserDate($user, $date); } catch (\Throwable $e) {}
         $profile = $profiles->findOneByUser($user);
         $data = null;
-        if ($cache) { $data = [ 'scores' => $cache->getScores(), 'summary' => $cache->getSummary(), 'aspects' => $cache->getAspects(), 'is_final' => $cache->isFinal()]; $fromCache = true; }
+    if ($entry) { $data = [
+        'scores' => $entry->getScores(),
+        'summary' => $entry->getSummary(),
+        'insights' => $entry->getInsights(),
+        'aspects' => ($entry->getRawData()['aspects'] ?? []),
+        'nextTransit' => $entry->getNextTransit(),
+        'is_final' => $entry->isFinal()
+        ]; $fromCache = true; }
         elseif ($profile) {
             try { $genData = $gen->generate($profile, $date); $data = $genData; } catch (\Throwable $e) { $data = null; }
         }

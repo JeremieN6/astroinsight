@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Repository\HoroscopeCacheRepository;
+use App\Repository\DailyHoroscopeRepository;
 use App\Repository\AstroProfileRepository;
 use App\Service\Astro\HoroscopeGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class HoroscopeController extends AbstractController
 {
     public function __construct(
-        private HoroscopeCacheRepository $cacheRepo,
+    private DailyHoroscopeRepository $dailyRepo,
         private AstroProfileRepository $profileRepo,
         private HoroscopeGeneratorInterface $generator,
         private EntityManagerInterface $em,
@@ -27,30 +27,33 @@ class HoroscopeController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
         $date = new DateTimeImmutable('today UTC');
-        $cache = $this->cacheRepo->findForUserAndDate($user, $date, 'daily');
-        if (!$cache) {
+        $entry = $this->dailyRepo->findOneForUserDate($user, $date);
+        if (!$entry) {
             $profile = $this->profileRepo->findOneByUser($user);
             if (!$profile) {
                 return $this->json(['error' => 'astro_profile_missing'], 400);
             }
             $data = $this->generator->generate($profile, $date);
-            $cache = new \App\Entity\HoroscopeCache();
-            $cache->setUser($user)->setDate($date)->setScope('daily')
-                ->setScores($data['scores'])
-                ->setSummary($data['summary'])
-                ->setAspects($data['aspects'])
+            $entry = new \App\Entity\DailyHoroscope();
+            $entry->setUser($user)
+                ->setDate($date)
+                ->setScores($data['scores'] ?? null)
+                ->setSummary($data['summary'] ?? null)
+                ->setRawData(['aspects' => $data['aspects'] ?? []])
+                ->setInsights($data['insights'] ?? null)
                 ->setGeneratedAt(new DateTimeImmutable())
-                ->setIsFinal(false);
-            $this->em->persist($cache);
+                ->setFinal(false);
+            $this->em->persist($entry);
             $this->em->flush();
         }
         return $this->json([
-            'date' => $cache->getDate()->format('Y-m-d'),
-            'scope' => 'daily',
-            'scores' => $cache->getScores(),
-            'summary' => $cache->getSummary(),
-            'aspects' => $cache->getAspects(),
-            'is_final' => $cache->isFinal(),
+            'date' => $entry->getDate()->format('Y-m-d'),
+            'scores' => $entry->getScores(),
+            'summary' => $entry->getSummary(),
+            'insights' => $entry->getInsights(),
+            'aspects' => ($entry->getRawData()['aspects'] ?? []),
+            'nextTransit' => $entry->getNextTransit(),
+            'is_final' => $entry->isFinal(),
         ]);
     }
 }

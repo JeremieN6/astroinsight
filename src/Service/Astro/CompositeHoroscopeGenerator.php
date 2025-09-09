@@ -3,6 +3,7 @@ namespace App\Service\Astro;
 
 use App\Entity\AstroProfile;
 use App\Service\Astro\Prokerala\ProkeralaApiClient;
+use App\Service\Astro\AspectInterpreter;
 use DateTimeInterface;
 use Psr\Log\LoggerInterface;
 
@@ -14,6 +15,7 @@ class CompositeHoroscopeGenerator implements HoroscopeGeneratorInterface
     public function __construct(
         private ProkeralaApiClient $client,
         private AspectComputer $aspectComputer,
+        private AspectInterpreter $aspectInterpreter,
         private LoggerInterface $logger,
     ) {}
 
@@ -40,20 +42,48 @@ class CompositeHoroscopeGenerator implements HoroscopeGeneratorInterface
         ];
         $apiAspects = $core['aspects'] ?? [];
 
-        // 2. Internal aspects if natal positions exist
         $internalAspects = [];
-        if ($profile->getNatalChartJson()) {
-            try {
-                $chart = json_decode($profile->getNatalChartJson(), true);
+        $insights = [];
+        try {
+            if ($profile->getLatitude() && $profile->getLongitude() && $profile->getBirthDate()) {
+                $birthDt = (new \DateTimeImmutable($profile->getBirthDate()->format('Y-m-d').' '.$profile->getBirthTime()->format('H:i:s')))->setTimezone(new \DateTimeZone('UTC'));
+                $birthIso = $birthDt->format('Y-m-d\TH:i:sP');
+                $todayIso = (new \DateTimeImmutable('now')) ->format('Y-m-d\T12:00:00P');
+                // Natal planet positions (western) may already be stored in natalChartJson; only fetch if absent
                 $natalPositions = [];
-                foreach (['sun','moon','mercury','venus','mars'] as $p) {
-                    if (isset($chart[$p]['degree'])) { $natalPositions[strtoupper($p)] = (float)$chart[$p]['degree']; }
+                if ($profile->getNatalChartJson()) {
+                    $chart = json_decode($profile->getNatalChartJson(), true) ?: [];
+                    foreach (['sun','moon','mercury','venus','mars'] as $p) {
+                        if (isset($chart[$p]['degree'])) { $natalPositions[strtoupper($p)] = (float)$chart[$p]['degree']; }
+                    }
                 }
-                // NOTE: On n'a pas (encore) les positions du jour par API -> si aspects API absents on ne peut calculer; placeholder.
-            } catch (\Throwable $e) {}
+                if (!$natalPositions) {
+                    $natalApi = $this->client->getNatalPlanetPositions($profile->getLatitude(), $profile->getLongitude(), $birthIso, 'UTC');
+                    $natalRaw = $natalApi['data']['planet_positions'] ?? [];
+                    foreach ($natalRaw as $row) {
+                        if (isset($row['planet']['name'], $row['position']['longitude'])) {
+                            $natalPositions[strtoupper($row['planet']['name'])] = (float)$row['position']['longitude'];
+                        }
+                    }
+                }
+                // Transit (current positions)
+                $transitApi = $this->client->getTransitPlanetPositions($todayIso, 'UTC');
+                $transitPositions = [];
+                foreach (($transitApi['data']['planet_positions'] ?? []) as $row) {
+                    if (isset($row['planet']['name'], $row['position']['longitude'])) {
+                        $transitPositions[strtoupper($row['planet']['name'])] = (float)$row['position']['longitude'];
+                    }
+                }
+                if ($natalPositions && $transitPositions) {
+                    $internalAspects = $this->aspectComputer->compute($natalPositions, $transitPositions);
+                }
+            }
+        } catch (\Throwable $e) {
+            $this->logger->notice('Aspect computation skipped', ['err' => $e->getMessage()]);
         }
-        // Merge aspects lists
+
         $aspects = $apiAspects ?: $internalAspects;
-        return [ 'scores' => $scores, 'summary' => $summary, 'aspects' => $aspects ];
+        if ($aspects) { $insights = $this->aspectInterpreter->interpret($aspects); }
+        return [ 'scores' => $scores, 'summary' => $summary, 'aspects' => $aspects, 'insights' => $insights ];
     }
 }
