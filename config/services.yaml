@@ -27,7 +27,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Service\Astro\HoroscopeGeneratorInterface: '@App\Service\Astro\Prokerala\ProkeralaHoroscopeGenerator'
+    # Use composite generator (combines external + internal logic)
+    App\Service\Astro\HoroscopeGeneratorInterface: '@App\Service\Astro\CompositeHoroscopeGenerator'
 
     App\Service\Astro\Prokerala\ProkeralaApiClient:
         arguments:

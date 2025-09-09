@@ -77,4 +77,68 @@ class ProkeralaApiClient
             'timezone' => $timezone,
         ]);
     }
+
+    // Full natal chart / kundli (basic or advanced)
+    public function getKundli(float $lat, float $lon, string $dateTimeIso, string $timezone, int $ayanamsa = 1, bool $advanced = false): array
+    {
+        $path = $advanced ? '/v2/astrology/kundli/advanced' : '/v2/astrology/kundli';
+        return $this->get($path, [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'ayanamsa' => $ayanamsa,
+            'timezone' => $timezone,
+        ]);
+    }
+
+    public function getMangalDosha(float $lat, float $lon, string $dateTimeIso, string $timezone, bool $advanced = false, int $ayanamsa = 1): array
+    {
+        $path = $advanced ? '/v2/astrology/mangal-dosha/advanced' : '/v2/astrology/mangal-dosha';
+        return $this->get($path, [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'ayanamsa' => $ayanamsa,
+            'timezone' => $timezone,
+        ]);
+    }
+
+    public function getKaalSarpDosha(float $lat, float $lon, string $dateTimeIso, string $timezone, int $ayanamsa = 1): array
+    {
+        return $this->get('/v2/astrology/kaal-sarp-dosha', [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'ayanamsa' => $ayanamsa,
+            'timezone' => $timezone,
+        ]);
+    }
+
+    public function getPanchang(float $lat, float $lon, string $dateTimeIso, string $timezone, bool $advanced = false, int $ayanamsa = 1): array
+    {
+        $path = $advanced ? '/v2/astrology/panchang/advanced' : '/v2/astrology/panchang';
+        return $this->get($path, [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'ayanamsa' => $ayanamsa,
+            'timezone' => $timezone,
+        ]);
+    }
+
+    public function getAuspiciousPeriod(float $lat, float $lon, string $dateTimeIso, string $timezone, int $ayanamsa = 1): array
+    {
+        return $this->get('/v2/astrology/auspicious-period', [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'ayanamsa' => $ayanamsa,
+            'timezone' => $timezone,
+        ]);
+    }
+
+    public function getInauspiciousPeriod(float $lat, float $lon, string $dateTimeIso, string $timezone, int $ayanamsa = 1): array
+    {
+        return $this->get('/v2/astrology/inauspicious-period', [
+            'coordinates' => $lat.','.$lon,
+            'datetime' => $dateTimeIso,
+            'ayanamsa' => $ayanamsa,
+            'timezone' => $timezone,
+        ]);
+    }
 }
