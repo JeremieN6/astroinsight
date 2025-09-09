@@ -3,15 +3,35 @@ namespace App\Service\Astro\Prokerala;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Psr\Log\LoggerInterface;
+use App\Service\Astro\ApiCache;
 
 class ProkeralaApiClient
 {
     private ?string $accessToken = null;
     private ?int $expiresAt = null;
 
+    /**
+     * TTL mapping in seconds for endpoints. Adjust as needed.
+     */
+    private array $defaultTtl = [
+        '/v2/horoscope/daily' => 1800,            // 30 min
+        '/v2/horoscope/daily/advanced' => 1800,
+        '/v2/astrology/birth-details' => 2592000, // 30 days
+        '/v2/astrology/kundli' => 15552000,       // 180 days
+        '/v2/astrology/kundli/advanced' => 15552000,
+        '/v2/astrology/mangal-dosha' => 15552000,
+        '/v2/astrology/mangal-dosha/advanced' => 15552000,
+        '/v2/astrology/kaal-sarp-dosha' => 15552000,
+        '/v2/astrology/panchang' => 86400,        // 1 day
+        '/v2/astrology/panchang/advanced' => 86400,
+        '/v2/astrology/auspicious-period' => 43200,  // 12h
+        '/v2/astrology/inauspicious-period' => 43200,
+    ];
+
     public function __construct(
         private HttpClientInterface $httpClient,
         private LoggerInterface $logger,
+        private ApiCache $apiCache,
         private string $clientId,
         private string $clientSecret,
         private string $baseUrl = 'https://api.prokerala.com'
@@ -38,14 +58,25 @@ class ProkeralaApiClient
         }
     }
 
-    private function get(string $path, array $query): array
+    private function get(string $path, array $query, ?int $ttl = null): array
     {
-        $this->authenticate();
-        $response = $this->httpClient->request('GET', $this->baseUrl.$path, [
-            'headers' => [ 'Authorization' => 'Bearer '.$this->accessToken ],
-            'query' => $query,
-        ]);
-        return $response->toArray(false);
+        // Determine TTL
+        $ttl = $ttl ?? ($this->defaultTtl[$path] ?? 900); // fallback 15 min
+        ksort($query);
+        $cacheKey = 'prokerala:'.$path.':'.http_build_query($query);
+        return $this->apiCache->getOrSet($cacheKey, $ttl, function () use ($path, $query) {
+            $this->authenticate();
+            $response = $this->httpClient->request('GET', $this->baseUrl.$path, [
+                'headers' => [ 'Authorization' => 'Bearer '.$this->accessToken ],
+                'query' => $query,
+            ]);
+            $arr = $response->toArray(false);
+            // On error structure (contains 'error') we avoid caching by throwing
+            if (isset($arr['error'])) {
+                throw new \RuntimeException('API error: '.json_encode($arr));
+            }
+            return $arr;
+        });
     }
 
     // Western daily horoscope basic
