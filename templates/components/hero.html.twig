@@ -1,25 +1,26 @@
 {# animation TAOS Tailwind : delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="400 #}
 <section class="bg-gray-50 dark:bg-gray-900">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-        <a href="{{ path('app_estimation') }}" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
-            <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 mr-3">Nouveau</span> <span class="text-sm font-medium italic">Créez vos devis avec QuickEsti™ 📈 !</span> 
+    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-20 lg:px-12">
+        <a href="{{ path(app.user ? 'user_horoscope_today' : 'app_register') }}" class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-indigo-700 bg-indigo-100 rounded-full dark:bg-indigo-800 dark:text-indigo-100 hover:bg-indigo-200 dark:hover:bg-indigo-700" role="alert">
+            <span class="text-xs bg-indigo-600 rounded-full text-white px-4 py-1.5 mr-3">Beta</span>
+            <span class="text-sm font-medium italic">Nouvelle génération d’horoscope intelligent</span>
             <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
         </a>
-        <h1 class="mb-4 text-5xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Estimez vos projets web <span class="text-gradient italic">en quelques clics</span></h1>
-        <p class="mb-8 text-xl font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-            QuickEsti vous aide à calculer le temps et le coût de votre projet web en prenant en compte vos contraintes, technologies et objectifs. Simple, rapide et pensé pour les entreprises <span class="font-bold">ET</span> les freelances.
+        <h1 class="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Au‑delà de l’horoscope&nbsp;: <span class="text-gradient italic">analyse personnelle & opportunités</span></h1>
+        <p class="mb-10 text-lg md:text-xl font-normal text-gray-600 sm:px-12 xl:px-40 dark:text-gray-300">
+            AstroInsight ne se contente pas d’un texte générique quotidien. L’application dresse un tableau comportemental dynamique (focus mental, réactivité émotionnelle, potentiel d’initiative, ouverture relationnelle), met en évidence les leviers personnels du moment et détecte vos fenêtres d’opportunités. Visualisations claires, langage concret, aucune mystification.
         </p>
-        <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <a href="{{ path('app_estimation') }}" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                Commencer l'estimation
+        <div class="flex flex-col mb-10 lg:mb-20 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+            <a href="{{ path(app.user ? 'user_horoscope_today' : 'app_register') }}" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-white rounded-lg bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-900">
+                {{ app.user ? 'Voir mon horoscope du jour' : 'Créer mon profil astrologique' }}
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </a>
-            <a href="#" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
-                Démonstration <span class="text-sm font-medium italic text-gray-500 dark:text-gray-400"> (bientôt disponible)</span>
+            <a href="#features" class="inline-flex justify-center items-center py-3 px-6 text-base font-medium text-center text-indigo-700 rounded-lg border border-indigo-300 hover:bg-indigo-100 focus:ring-4 focus:ring-indigo-100 dark:text-indigo-300 dark:border-indigo-600 dark:hover:bg-indigo-800/40 dark:focus:ring-indigo-800">
+                Découvrir les fonctionnalités
             </a>
         </div>
-        <!-- Brand Logo Section -->
-        {{ include('components/brand_logo.html.twig') }}
+        <div class="mt-4 opacity-90">
+            {{ include('components/brand_logo.html.twig') }}
+        </div>
     </div>
 </section>

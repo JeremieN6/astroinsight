@@ -19,8 +19,8 @@ final class HomeController extends AbstractController
     {
         $plans = $planRepository->findAll();
         return $this->render('home/index.html.twig', [
-            'page_title' => 'QuickEsti - Estimations de projets web avec IA',
-            'meta_description' => 'Créez des devis professionnels en quelques clics avec notre IA. Adapté aux freelances et entreprises.',
+            'page_title' => 'AstroInsight – Astrologie de précision',
+            'meta_description' => 'Horoscope quotidien personnalisé, aspects clés et scores d’énergie pour mieux décider.',
             'plans' => $plans,
         ]);
     }
@@ -31,17 +31,8 @@ final class HomeController extends AbstractController
         // La sécurité est gérée par security.yaml (ROLE_USER requis)
         // Pas besoin de vérification manuelle ici
         return $this->render('estimation/index.html.twig', [
-            'page_title' => 'Estimation de projet - QuickEsti',
-            'meta_description' => 'Utilisez notre outil d\'estimation intelligent pour créer votre devis personnalisé.',
-        ]);
-    }
-
-    #[Route('/estimation-v2', name: 'app_estimation_v2')]
-    public function estimationV2(): Response
-    {
-        return $this->render('estimation/v2.html.twig', [
-            'page_title' => 'Estimation de projet V2 - QuickEsti',
-            'meta_description' => 'Nouvelle version de notre outil d\'estimation avec interface guidée par étapes.',
+            'page_title' => 'AstroInsight - Générateur d\'horoscope quotidien et d\'analyse approfondies',
+            'meta_description' => 'Application qui se distingue par ses fonctionnalités d\'analyse comportementale et de prédiction des opportunités personnelles.',
         ]);
     }
 
@@ -71,23 +62,27 @@ final class HomeController extends AbstractController
         }
 
         // Compteurs dynamiques
-    $quotesCount = $quoteRepository->countByUser($user);
     $estimationsCount = $quoteRepository->countEstimationsByUser($user);
-    $acceptedQuotes = $quoteRepository->countAcceptedByUser($user);
-    $clientsCount = $clientRepository->countByUser($user);
     $downloadsCount = $quoteRepository->sumDownloadsByUser($user);
 
         return $this->render('main/dashboard.html.twig', [
-            'page_title' => 'Tableau de bord - QuickEsti',
+            'page_title' => 'Tableau de bord - AstroInsight',
+            'meta_description' => 'Paramétrez votre profil astrologique et accédez à votre tableau de bord.',
             'user' => $user,
             'profileForm' => $profileForm->createView(),
             'counters' => [
-                'quotes' => $quotesCount,
                 'estimations' => $estimationsCount,
-                'accepted' => $acceptedQuotes,
-                'clients' => $clientsCount,
                 'downloads' => $downloadsCount,
             ],
+        ]);
+    }
+
+    #[Route('/politique-de-confidentialité', name: 'app_privacy_policy')]
+    public function privacyPolicy(): Response
+    {
+        return $this->render('components/privacy-policy.html.twig', [
+            'page_title' => 'AstroInsight - Générateur d\'horoscope quotidien et d\'analyse approfondies',
+            'meta_description' => 'Application qui se distingue par ses fonctionnalités d\'analyse comportementale et de prédiction des opportunités personnelles.',
         ]);
     }
 }
