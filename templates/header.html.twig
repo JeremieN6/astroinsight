@@ -10,9 +10,15 @@
             <a href="{{ path('app_home') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
                 Accueil
             </a>
-            <a href="{{ path('app_estimation') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
-                Estimation <sup class="text-gradient italic text-xs">New</sup>
+            {% if app.user %}
+            <a href="{{ path('user_horoscope_today') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Mon Horoscope
             </a>
+            {% else %}
+            <a href="{{ path('app_register') }}" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500">
+                Essayer
+            </a>
+            {% endif %}
             <a href="/#features" class="text-gray-900 hover:text-blue-700 px-3 py-2 text-sm font-medium dark:text-white dark:hover:text-blue-500" title="Grille analytique &amp; opportunités personnelles">
                 Fonctionnalités
             </a>
@@ -41,15 +47,15 @@
                 <a href="{{ path('app_account') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
                     Tableau de bord
                 </a>
-                <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700">
-                    Nouvelle estimation
+                <a href="{{ path('user_horoscope_today') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700">
+                    Mon Horoscope
                 </a>
             {% else %}
                 <a href="{{ path('app_login') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
                     Connexion
                 </a>
-                <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700" title="Démonstration rapide du tableau de bord">
-                    Essayer gratuitement
+                <a href="{{ path('app_register') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700" title="Démonstration rapide du tableau de bord">
+                    Essayer
                 </a>
             {% endif %}
         </div>
@@ -71,9 +77,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('app_estimation') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                        Estimation <sup class="text-gradient italic">New</sup>
+                    {% if app.user %}
+                    <a href="{{ path('user_horoscope_today') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Mon Horoscope
                     </a>
+                    {% else %}
+                    <a href="{{ path('app_register') }}" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Essayer
+                    </a>
+                    {% endif %}
                 </li>
                 <li>
                     <a href="/#features" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" title="Grille analytique &amp; opportunités personnelles">
@@ -106,15 +118,15 @@
                     <a href="{{ path('app_account') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
                         Tableau de bord
                     </a>
-                    <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700">
-                        Nouvelle estimation
+                    <a href="{{ path('user_horoscope_today') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700">
+                        Mon Horoscope
                     </a>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
                         Connexion
                     </a>
-                    <a href="{{ path('app_estimation') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700" title="Démonstration rapide du tableau de bord">
-                        Demo rapide
+                    <a href="{{ path('app_register') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700" title="Créer mon profil astrologique">
+                        Essayer
                     </a>
                 {% endif %}
             </div>

@@ -22,14 +22,22 @@ class BlogGeneratorService
     {
         // Sujets prédéfinis si aucun sujet n'est fourni
         $defaultTopics = [
-            "L'importance de l'estimation précise dans les projets web en 2025",
-            "Les tendances du développement web à surveiller cette année",
-            "Comment optimiser les coûts de développement d'une application",
-            "Les erreurs courantes dans la gestion de projet web",
-            "Guide complet pour choisir les bonnes technologies web",
-            "L'impact de l'IA sur le développement web moderne",
-            "Stratégies pour améliorer l'UX/UI de votre application",
-            "Les meilleures pratiques de sécurité web en 2025"
+            "Aller au‑delà de l'horoscope : analyser ses dynamiques personnelles",
+            "Fenêtres d’opportunités : comment les repérer et les utiliser au quotidien",
+            "Méthode AstroInsight : scores, leviers et focus de la semaine",
+            "Aspects clés du jour : agir quand l’énergie est favorable",
+            "Mercure rétrograde sans panique : check‑list pragmatique",
+            "Mars et productivité : canaliser l’énergie sans s’épuiser",
+            "Vénus et relations pro : négocier et collaborer au bon moment",
+            "La Lune et le rythme : organiser sa semaine avec les bons tempos",
+            "Planifier ses objectifs trimestriels avec ses cycles personnels",
+            "Lire sa météo intérieure : prendre de meilleures décisions au bon moment",
+            "Compatibilité d’équipe : synchroniser réunions et sprints avec l’énergie du moment",
+            "Rituel hebdo en 10 minutes : faire le point avec AstroInsight",
+            "Limites de l’astrologie appliquée : ce qu’on mesure et ce qu’on ne promet pas",
+            "Cas pratiques avant/après : le ROI personnel d’un meilleur timing",
+            "Devenir antifragile : utiliser les périodes de tension pour progresser",
+            "Top erreurs d’interprétation astrologique à éviter (et comment les corriger)"
         ];
 
         $selectedTopic = $topic ?: $defaultTopics[array_rand($defaultTopics)];
@@ -100,16 +108,16 @@ class BlogGeneratorService
             "<ul><li>Point important</li><li>Autre point</li></ul>\n" .
             "<p>Paragraphe de transition.</p>\n\n" .
             "---\n\n" .
-            "Tu es un expert en rédaction web spécialisé dans les projets tech. Rédige un article sur : \"$topic\".\n\n" .
-            "AUDIENCE : Entreprises tech, CTOs, agences web, développeurs freelances\n" .
-            "CONTEXTE : QuickEsti est une plateforme d'estimation de projets web qui aide les développeurs freelances, agences et entreprises à évaluer précisément leurs projets.\n\n" .
+            "Tu es un rédacteur spécialisé en astrologie appliquée et pédagogie. Rédige un article sur : \"$topic\".\n\n" .
+            "AUDIENCE : Curieux exigeants, indépendants, entrepreneurs, managers et équipes produit — des personnes orientées décision qui veulent des repères concrets.\n" .
+            "CONTEXTE : AstroInsight est une application d’astrologie analytique qui transforme l’activité astrologique pertinente et le thème natal en tableau de bord personnel (scores, tendances, fenêtres d’opportunités).\n\n" .
             "STRUCTURE : 5-6 sections avec <h2>\n" .
-            "STYLE : Professionnel, exemples concrets, conseils pratiques. Ajoute quelques emojis pour rendre l'article plus attrayant. Invente des exemples (avec des chiffres, nom d'entreprise, etc.) avant/après utiles pour illustrer les points clés (parfois).\n\n" .
+            "STYLE : Clair, pragmatique, non fataliste. Exemples concrets du quotidien pro/perso, conseils actionnables. Ajoute quelques emojis avec parcimonie. Invente des exemples avant/après (avec chiffres, contexte) pour illustrer les points clés quand c’est utile.\n\n" .
             "RÈGLE ABSOLUE : Utilise UNIQUEMENT <h2>, <p>, <ul>, <ol>. JAMAIS de <div> ni <span>.\n\n" .
-            "Écris un article de 800-1400 mots avec 5-6 sections <h2>. Intègre naturellement les mots-clés : estimation projet, développement web, coût développement, gestion projet, ROI, budget tech, agile, agence web, freelance.\nA la fin ajoute un call-to-action pour inciter à utiliser QuickEsti ou un conseil actionnable pour améliorer les projets web.\n\n" .
+            "Écris un article de 800-1400 mots avec 5-6 sections <h2>. Intègre naturellement les notions : astrologie appliquée, analyse comportementale, aspects, cycles personnels, opportunités, méthode, limites.\nÀ la fin, ajoute un call-to-action pour découvrir AstroInsight ou un conseil actionnable pour lire sa ‘météo intérieure’.\n\n" .
             "RÉPONSE JSON EXACTE :\n" .
-            "{\n    \"titre\": \"Titre SEO optimisé (50-60 caractères)\",\n    \"slug\": \"slug-seo-automatique\",\n    \"contenu\": \"HTML complet avec structure préservée\",\n    \"auteur\": \"Jérémie N.\",\n    \"metaDescription\": \"Description SEO 150-160 caractères\",\n    \"motsCles\": [\"estimation-projet\", \"développement-web\", \"gestion-projet\"]\n}\n\n" .
-            "IMPÉRATIF : L'article doit parler directement aux préoccupations de l'audience tech (coûts, délais, qualité, ROI) avec des exemples du secteur. Préserve exactement le formatage HTML généré.";
+            "{\n    \"titre\": \"Titre SEO optimisé (50-60 caractères)\",\n    \"slug\": \"slug-seo-automatique\",\n    \"contenu\": \"HTML complet avec structure préservée\",\n    \"auteur\": \"Jérémie N.\",\n    \"metaDescription\": \"Description SEO 150-160 caractères\",\n    \"motsCles\": [\"astrologie appliquée\", \"analyse comportementale\", \"opportunités personnelles\"]\n}\n\n" .
+            "IMPÉRATIF : L'article doit traiter des décisions concrètes (timing, énergie/temps, qualité d’exécution, ROI personnel) avec des exemples crédibles. Préserve exactement le formatage HTML généré.";
     }
 
     /**

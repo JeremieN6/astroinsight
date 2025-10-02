@@ -10,7 +10,11 @@
 				<a aria-current="page" href="{{ path('app_home') }}" class="router-link-active router-link-exact-active mr-4 hover:underline md:mr-6">Accueil</a>
 			</li>
 			<li>
-				<a href="{{ path('app_estimation') }}" class="mr-4 hover:underline md:mr-6">Estimation</a>
+				{% if app.user %}
+				<a href="{{ path('user_horoscope_today') }}" class="mr-4 hover:underline md:mr-6">Mon Horoscope</a>
+				{% else %}
+				<a href="{{ path('app_register') }}" class="mr-4 hover:underline md:mr-6">Essayer</a>
+				{% endif %}
 			</li>
 			<li>
 				<a href="/#features" class="mr-4 hover:underline md:mr-6">Fonctionnalités</a>

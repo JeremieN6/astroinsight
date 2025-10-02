@@ -9,6 +9,7 @@ parameters:
     stripe_webhook_secret: '%env(resolve:STRIPE_WEBHOOK_SECRET)%'
     stripe_sk: '%env(resolve:STRIPE_SK)%'
     stripe_pk: '%env(resolve:STRIPE_PK)%'
+    app.newsletter_admin_email: '%env(resolve:NEWSLETTER_ADMIN_EMAIL)%'
 
 services:
     # default configuration for services in *this* file
@@ -42,3 +43,8 @@ services:
 
     # Example of alias if later switching implementations
     # App\Service\Astro\HoroscopeGeneratorInterface: '@App\Service\Astro\Stub\SimpleHoroscopeGenerator'
+
+    App\Service\Newsletter\NewsletterService:
+        arguments:
+            $brevoApiKey: '%env(default::null:BREVO_API_KEY)%'
+            $brevoListId: '%env(default::null:BREVO_LIST_ID)%'
