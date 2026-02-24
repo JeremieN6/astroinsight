@@ -60,3 +60,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
+# Fichiers/Dossiers de gestion MCP
+.github
+.mcp
+.vscode
+CLAUDE.md
