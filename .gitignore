@@ -62,7 +62,7 @@ yarn-error.log*
 
 
 # Fichiers/Dossiers de gestion MCP
-.github
-.mcp
-.vscode
-CLAUDE.md
+# .github
+# .mcp
+# .vscode
+# CLAUDE.md
