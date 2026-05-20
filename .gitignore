@@ -66,3 +66,7 @@ yarn-error.log*
 # .mcp
 # .vscode
 # CLAUDE.md
+
+# Dossiers et fichiers de gestion de projet temporaire
+/tmp
+/backup
