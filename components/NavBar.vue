@@ -105,6 +105,7 @@ const isScrolled = ref(false)
 const menuOpen = ref(false)
 
 const navLinks = [
+  { href: '/horoscope-du-jour', label: 'Horoscope du jour' },
   { href: '/#benefits', label: 'Fonctionnalites' },
   { href: '/#how-it-works', label: 'Comment ca marche' },
   { href: '/#pricing', label: 'Tarifs' },
