@@ -40,4 +40,4 @@
 ---
 
 ## Notes de Session
-> Ajouter ici un resume a la fin de chaque session de travail.
+> 2026-05-21: Ajout d'un acces discret a l'horoscope du jour dans le header et le footer, avec endpoint Nuxt dedie, cache journalier et fallback IA. La suite a brainstormer est un bundle premium / abonnement pour un horoscope plus detaille reserve aux utilisateurs payants.

@@ -45,6 +45,14 @@
 
       <div class="flex items-center gap-3">
         <NuxtLink
+          to="/horoscope-du-jour"
+          class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.18em] text-slate-300 transition-colors duration-300 hover:border-amber-400/25 hover:text-amber-200 md:inline-flex"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
+          Horoscope
+        </NuxtLink>
+
+        <NuxtLink
           to="/#pricing"
           class="hidden items-center gap-2 rounded-full bg-[linear-gradient(135deg,#7c3aed,#a855f7_50%,#f59e0b)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(124,58,237,0.6)] sm:inline-flex"
         >
