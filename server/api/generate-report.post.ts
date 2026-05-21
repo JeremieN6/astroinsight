@@ -1,4 +1,6 @@
 import { buildNatalChart } from '../utils/astro'
+import { reports } from '../../db/schema'
+import { getDbIfConfigured } from '../utils/db'
 import tzLookup from 'tz-lookup'
 
 interface ReportRequest {
@@ -55,7 +57,35 @@ export default defineEventHandler(async (event) => {
     summary = generateFallbackSummary(body.firstName, chart)
   }
 
+  let reportId: string | null = null
+  const db = getDbIfConfigured(event)
+
+  if (db) {
+    try {
+      const inserted = await db.insert(reports).values({
+        firstName: body.firstName,
+        birthDate: body.birthDate,
+        birthTime: body.birthTime || null,
+        city: body.city,
+        lat: body.lat,
+        lon: body.lon,
+        gender: body.gender || null,
+        email: body.email || null,
+        sunSign: chart.sunSign,
+        moonSign: chart.moonSign,
+        ascendant: chart.ascendant,
+        summary,
+      }).returning({ id: reports.id })
+
+      reportId = inserted[0]?.id ?? null
+    } catch (err) {
+      // Do not fail the user flow when persistence is unavailable.
+      console.error('[generate-report] DB insert failed:', err)
+    }
+  }
+
   return {
+    reportId,
     firstName: body.firstName,
     birthDate: body.birthDate,
     city: body.city,
