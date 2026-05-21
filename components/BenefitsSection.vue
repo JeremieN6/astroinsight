@@ -1,32 +1,49 @@
 <template>
   <section id="benefits" class="section-transition scroll-mt-24 py-20 sm:py-24">
     <div class="section-shell">
-      <div class="mx-auto mb-16 max-w-2xl text-center">
-        <p class="eyebrow reveal-on-scroll mb-4">Pourquoi AstroInsights</p>
-        <h2 class="section-title reveal-on-scroll">
-          Ce que révèle<br/><span class="text-amber-400">votre thème natal</span>
-        </h2>
-        <p class="reveal-on-scroll mt-5 text-slate-400 text-base leading-7">
-          L'astrologie n'est pas de la divination. C'est un langage symbolique millénaire que l'IA traduit aujourd'hui avec une précision remarquable.
-        </p>
-      </div>
+    <div class="mx-auto mb-16 max-w-3xl text-center">
+      <p class="eyebrow reveal-on-scroll mb-4">Pourquoi AstroInsight ?</p>
+      <h2 class="section-title reveal-on-scroll mx-auto max-w-3xl">
+        L'astrologie de précision, accessible à tous
+      </h2>
+      <p class="reveal-on-scroll mx-auto mt-6 max-w-2xl text-lg text-slate-300">
+        Contrairement aux horoscopes génériques, votre thème natal révèle qui vous êtes vraiment.
+      </p>
+    </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid gap-6 md:grid-cols-3">
+      <article
+        v-for="benefit in benefits"
+        :key="benefit.title"
+        class="reveal-on-scroll glass-panel group relative overflow-hidden px-8 py-10 text-center transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_32px_80px_rgba(124,58,237,0.25)]"
+        :style="`animation-delay: ${benefit.delay}ms`"
+      >
         <div
-          v-for="(benefit, i) in benefits"
-          :key="benefit.title"
-          class="reveal-on-scroll glass-panel group cursor-pointer p-7 transition-all duration-300 hover:-translate-y-2 hover:border-violet-400/30 hover:shadow-[0_0_50px_rgba(124,58,237,0.6)]"
-          :style="`transition-delay: ${i * 60}ms`"
+          class="pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          :class="benefit.glow"
+        />
+        <div
+          class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+
+        <div
+          class="relative z-10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-amber-400/30 bg-amber-400/10 text-4xl transition-all duration-500 group-hover:border-amber-400/60 group-hover:bg-amber-400/20 group-hover:shadow-[0_0_40px_rgba(251,191,36,0.35)]"
         >
-          <!-- Icon -->
-          <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300"
-               :class="benefit.iconBg">
-            <span class="text-2xl">{{ benefit.icon }}</span>
-          </div>
-          <h3 class="mb-3 font-display text-lg font-semibold text-white leading-snug">{{ benefit.title }}</h3>
-          <p class="text-sm text-slate-400 leading-6">{{ benefit.description }}</p>
+          {{ benefit.icon }}
         </div>
-      </div>
+
+        <div
+          class="pointer-events-none absolute left-1/2 top-[72px] h-24 w-24 -translate-x-1/2 rounded-full border border-amber-400/10 opacity-0 transition-all duration-500 group-hover:scale-125 group-hover:opacity-100"
+        />
+
+        <h3 class="relative z-10 font-display text-2xl text-white">
+          {{ benefit.title }}
+        </h3>
+        <p class="relative z-10 mt-4 text-base leading-8 text-slate-400">
+          {{ benefit.description }}
+        </p>
+      </article>
+    </div>
     </div>
   </section>
 </template>
@@ -34,40 +51,25 @@
 <script setup lang="ts">
 const benefits = [
   {
-    icon: '☀',
-    iconBg: 'bg-amber-500/10 border border-amber-400/20',
-    title: 'Signe Solaire précis',
-    description: 'Votre identité profonde, votre volonté, la lumière que vous projetez dans le monde. Bien plus qu\'un simple signe du zodiaque.',
+    icon: '✨',
+    glow: 'from-amber-500/20 to-amber-400/5',
+    title: 'Rapport 100% personnalisé',
+    description: 'Basé sur votre date, heure et lieu exact de naissance. Chaque rapport est unique — comme vous.',
+    delay: 0,
   },
   {
-    icon: '☽',
-    iconBg: 'bg-violet-500/10 border border-violet-400/20',
-    title: 'Signe Lunaire révélé',
-    description: 'Vos émotions, réactions instinctives et besoins émotionnels. La face cachée de votre personnalité que peu de gens connaissent.',
+    icon: '🔭',
+    glow: 'from-violet-500/20 to-purple-400/5',
+    title: 'IA astro-experte',
+    description: 'Notre IA analyse la position combinée de 10+ planètes et 12 maisons pour une lecture d\'une précision inégalée.',
+    delay: 100,
   },
   {
-    icon: '↑',
-    iconBg: 'bg-sky-500/10 border border-sky-400/30',
-    title: 'Ascendant calculé',
-    description: 'Votre image sociale, votre façade au monde. L\'ascendant influence profondément la manière dont les autres vous perçoivent.',
-  },
-  {
-    icon: '♄',
-    iconBg: 'bg-purple-500/10 border border-violet-500/20',
-    title: '10 Planètes analysées',
-    description: 'Mercure, Vénus, Mars, Jupiter, Saturne, Uranus, Neptune et Pluton. Chaque planète raconte une partie de votre histoire.',
-  },
-  {
-    icon: '⬡',
-    iconBg: 'bg-emerald-500/10 border border-emerald-400/30',
-    title: 'Aspects planétaires',
-    description: 'Les angles formés entre vos planètes révèlent des tensions, harmonies et potentiels cachés de votre personnalité.',
-  },
-  {
-    icon: '✦',
-    iconBg: 'bg-rose-500/10 border border-rose-400/30',
-    title: 'Analyse IA personnalisée',
-    description: 'Un texte d\'interprétation unique généré pour vous par GPT-4o, qui synthétise toutes vos positions planétaires.',
+    icon: '⚡',
+    glow: 'from-blue-500/20 to-cyan-400/5',
+    title: 'Résultats en 30 secondes',
+    description: 'Instantané, sans inscription obligatoire. Entrez vos données et recevez votre analyse complète en quelques secondes.',
+    delay: 200,
   },
 ]
 </script>

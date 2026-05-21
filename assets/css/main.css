@@ -34,6 +34,30 @@
       linear-gradient(180deg, var(--color-night), var(--color-void));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.45) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 72% 32%, rgba(251, 191, 36, 0.5) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 42% 64%, rgba(168, 85, 247, 0.45) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 84% 74%, rgba(255, 255, 255, 0.4) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 12% 82%, rgba(255, 255, 255, 0.35) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 58% 8%, rgba(255, 255, 255, 0.35) 0 1px, transparent 1.2px);
+    background-size: 340px 340px, 420px 420px, 380px 380px, 460px 460px, 500px 500px, 560px 560px;
+    opacity: 0.55;
+  }
+
+  #__nuxt {
+    position: relative;
+    z-index: 1;
   }
 
   h1, h2, h3, h4 {

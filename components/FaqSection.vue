@@ -1,41 +1,63 @@
 <template>
   <section id="faq" class="section-transition scroll-mt-24 py-20 sm:py-24">
     <div class="section-shell">
-      <div class="mx-auto mb-14 max-w-2xl text-center">
+    <div class="mx-auto mb-16 max-w-2xl text-center">
         <p class="eyebrow reveal-on-scroll mb-4">FAQ</p>
         <h2 class="section-title reveal-on-scroll">Questions fréquentes</h2>
+        <p class="reveal-on-scroll mx-auto mt-6 max-w-xl text-lg text-slate-300">
+          Tout ce que vous devez savoir avant de découvrir votre thème natal.
+        </p>
       </div>
 
       <div class="mx-auto max-w-3xl space-y-3">
         <div
           v-for="(item, i) in faqs"
           :key="i"
-          class="reveal-on-scroll glass-panel overflow-hidden transition-all duration-300 hover:border-white/20"
+          class="reveal-on-scroll glass-panel group overflow-hidden transition-all duration-300 hover:border-white/20"
           :style="`transition-delay: ${i * 40}ms`"
         >
           <button
-            class="flex w-full items-center justify-between px-7 py-5 text-left"
+            class="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition-colors duration-200"
+            :aria-expanded="open === i"
             @click="toggle(i)"
           >
-            <span class="font-medium text-white text-sm sm:text-base pr-5">{{ item.question }}</span>
-            <svg
-              class="h-5 w-5 shrink-0 text-amber-400 transition-transform duration-300"
-              :class="open === i ? 'rotate-45' : ''"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <span class="pr-5 font-display text-base text-white md:text-lg">{{ item.question }}</span>
+            <div
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 transition-all duration-300"
+              :class="open === i ? 'border-amber-400/40 bg-amber-400/10' : 'group-hover:border-white/25'"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"/>
-            </svg>
+              <svg
+                class="h-4 w-4 text-amber-400 transition-transform duration-300"
+                :class="open === i ? 'rotate-45' : ''"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 5v14M5 12h14"/>
+              </svg>
+            </div>
           </button>
 
           <div
             class="overflow-hidden transition-all duration-500"
-            :style="open === i ? 'max-height: 300px; opacity: 1' : 'max-height: 0; opacity: 0'"
+            :style="open === i ? 'max-height: 420px; opacity: 1' : 'max-height: 0; opacity: 0'"
           >
-            <p class="px-7 pb-6 text-sm text-slate-400 leading-6">{{ item.answer }}</p>
+            <p class="px-7 pb-6 text-sm leading-7 text-slate-400">{{ item.answer }}</p>
           </div>
         </div>
+      </div>
+
+      <div class="reveal-on-scroll mt-14 text-center">
+        <p class="text-slate-400">Vous avez d'autres questions ?</p>
+        <a
+          href="mailto:contact@astroinsights.fr"
+          class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-amber-400 transition-colors hover:text-amber-300"
+        >
+          Contactez-nous
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>

@@ -1,14 +1,17 @@
 <template>
   <section class="section-transition py-20 sm:py-24">
     <div class="section-shell">
-      <div class="mx-auto mb-14 max-w-2xl text-center">
+      <div class="mx-auto mb-14 max-w-3xl text-center">
         <p class="eyebrow reveal-on-scroll mb-4">Témoignages</p>
         <h2 class="section-title reveal-on-scroll">
-          Ce qu'ils en disent
+          Ce que disent les étoiles... et nos utilisateurs
         </h2>
+        <p class="reveal-on-scroll mx-auto mt-6 max-w-xl text-lg text-slate-300">
+          Des retours authentiques après découverte de leur thème natal.
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
         <div
           v-for="(t, i) in testimonials"
           :key="t.name"
@@ -42,34 +45,19 @@
 <script setup lang="ts">
 const testimonials = [
   {
-    name: 'Sophie L.',
-    role: 'Designer · Paris',
-    quote: 'Mon ascendant Scorpion explique tellement de choses que je n\'arrivais pas à comprendre chez moi. L\'analyse est bluffante de précision.',
+    name: 'Camille R.',
+    role: 'Scorpion',
+    quote: 'Incroyablement précis pour mon ascendant Scorpion. Chaque détail correspondait exactement à ce que je ressens profondément.',
   },
   {
-    name: 'Marc D.',
-    role: 'Entrepreneur · Lyon',
-    quote: 'J\'étais sceptique, mais la description de mon Mercure en Gémeaux correspond exactement à ma façon de penser. Je recommande.',
+    name: 'Sophie M.',
+    role: 'Balance',
+    quote: 'Je ne m\'attendais pas à quelque chose de générique, mais ce rapport est d\'une précision troublante. La description de ma Lune en Vierge m\'a coupé le souffle.',
   },
   {
-    name: 'Laure B.',
-    role: 'Thérapeute · Bordeaux',
-    quote: 'Le rapport premium est une vraie mine d\'or. Je l\'utilise en complément de mes séances pour mieux comprendre mes clients.',
-  },
-  {
-    name: 'Thomas R.',
-    role: 'Ingénieur · Strasbourg',
-    quote: 'Résultat en 30 secondes, analyse de 15 pages. Excellent rapport qualité-prix. J\'ai offert le rapport complet à toute ma famille.',
-  },
-  {
-    name: 'Amélie N.',
-    role: 'Étudiante · Nantes',
-    quote: 'Enfin un outil d\'astrologie sérieux qui va au-delà du signe solaire. La section sur les aspects planétaires est fascinante.',
-  },
-  {
-    name: 'Pierre M.',
-    role: 'Professeur · Toulouse',
-    quote: 'La précision du calcul de l\'ascendant à la minute près est impressionnante. Interface belle et fluide. Très satisfait.',
+    name: 'Léa B.',
+    role: 'Poissons',
+    quote: 'Les aspects planétaires ont tout éclairé sur mes relations amoureuses. En 30 secondes j\'ai obtenu plus d\'infos que des années d\'horoscopes.',
   },
 ]
 </script>
