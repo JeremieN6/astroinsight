@@ -14,6 +14,16 @@ This document tracks the progressive removal of Symfony/PHP code in favor of a s
 - Added shared Drizzle connection utility for Nitro server routes: `server/utils/db.ts`
 - Added report persistence in JS API route when `DATABASE_URL` is configured: `server/api/generate-report.post.ts`
 - Added migration visibility endpoint: `GET /api/backend-status`
+- Added core Neon-ready domain tables in Drizzle schema:
+   - `users_js`
+   - `plans_js`
+   - `subscriptions_js`
+   - `invoices_js`
+- Added JS account endpoints:
+   - `GET /api/user/profile`
+   - `GET /api/user/subscription-status`
+- Added Stripe webhook endpoint with signature verification:
+   - `POST /api/stripe/webhook`
 
 ## Migration Principles
 
@@ -67,7 +77,7 @@ After parity is confirmed:
 
 ## Next Immediate Actions
 
-1. Design Drizzle tables for `users`, `plans`, `subscriptions`, `invoices`.
-2. Create Nitro routes for user profile and subscription status.
-3. Add Stripe webhook route and signature verification.
-4. Add a migration checklist to PR template.
+1. Generate and apply Drizzle SQL migrations for the new JS tables.
+2. Seed `plans_js` with production Stripe price ids.
+3. Connect frontend premium state to `GET /api/user/subscription-status` (replace local-only unlock behavior).
+4. Replace remaining legacy `/api/estimation*` Symfony dependencies with Nitro routes.

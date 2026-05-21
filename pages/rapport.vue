@@ -167,6 +167,13 @@ const step = ref(0)
 const calculating = ref(false)
 const unknownBirthTime = ref(false)
 
+onMounted(() => {
+  reportStore.initFromStorage()
+  if (reportStore.userEmail) {
+    reportStore.syncPremiumStatusFromServer(reportStore.userEmail)
+  }
+})
+
 const form = reactive({
   firstName: '',
   birthDate: '',
@@ -237,7 +244,10 @@ async function calculate() {
     })
 
     reportStore.setReportData(res as Record<string, unknown>)
-    if (form.email) reportStore.setUserEmail(form.email)
+    if (form.email) {
+      reportStore.setUserEmail(form.email)
+      reportStore.syncPremiumStatusFromServer(form.email)
+    }
     step.value = 2
   } catch (err) {
     console.error(err)

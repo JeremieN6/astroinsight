@@ -34,12 +34,21 @@ import { useReportStore } from '~/stores/report'
 useHead({ title: 'Paiement réussi — AstroInsights' })
 
 const reportStore = useReportStore()
+const route = useRoute()
 
 function unlock() {
   reportStore.unlockPremium()
 }
 
 onMounted(() => {
-  reportStore.unlockPremium()
+  const email = typeof route.query.email === 'string' ? route.query.email : ''
+
+  if (!email) {
+    reportStore.unlockPremium()
+    return
+  }
+
+  reportStore.setUserEmail(email)
+  reportStore.syncPremiumStatusFromServer(email)
 })
 </script>
