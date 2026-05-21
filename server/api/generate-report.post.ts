@@ -1,4 +1,5 @@
 import { buildNatalChart } from '../utils/astro'
+import tzLookup from 'tz-lookup'
 
 interface ReportRequest {
   firstName: string
@@ -22,10 +23,22 @@ export default defineEventHandler(async (event) => {
   // Parse date + time
   const [year, month, day] = body.birthDate.split('-').map(Number)
   const [hours, minutes] = (body.birthTime || '12:00').split(':').map(Number)
-  const hourDecimal = hours + minutes / 60
+  const timezone = tzLookup(body.lat, body.lon)
+  const utcBirth = localDateTimeToUtc(year, month, day, hours, minutes, timezone)
+  const utcHourDecimal =
+    utcBirth.getUTCHours() +
+    utcBirth.getUTCMinutes() / 60 +
+    utcBirth.getUTCSeconds() / 3600
 
   // Calculate chart
-  const chart = buildNatalChart(year, month, day, hourDecimal, body.lat, body.lon)
+  const chart = buildNatalChart(
+    utcBirth.getUTCFullYear(),
+    utcBirth.getUTCMonth() + 1,
+    utcBirth.getUTCDate(),
+    utcHourDecimal,
+    body.lat,
+    body.lon,
+  )
 
   // Generate AI summary if OpenAI key is configured
   const config = useRuntimeConfig()
@@ -95,4 +108,51 @@ Style : direct, précis, encourageant. Évite les formules génériques. Commenc
 
 function generateFallbackSummary(firstName: string, chart: ReturnType<typeof buildNatalChart>): string {
   return `${firstName}, votre thème natal révèle une personnalité façonnée par une combinaison unique d'énergies cosmiques. En tant que ${chart.sunSign}, vous portez en vous une énergie solaire distinctive. Votre Lune en ${chart.moonSign} guide votre vie émotionnelle intérieure, vous donnant une sensibilité particulière et des réactions instinctives caractéristiques. Votre Ascendant en ${chart.ascendant} constitue votre façade au monde — la première impression que vous laissez et la manière dont vous abordez les nouvelles situations. L'ensemble de vos positions planétaires dessine un portrait complexe et nuancé qui va bien au-delà de votre simple signe solaire. Chaque planète dans son signe apporte une couleur unique à votre personnalité, vos désirs, votre communication et votre façon d'interagir avec le monde. Votre rapport complet explore ces nuances en profondeur.`
+}
+
+function localDateTimeToUtc(
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number,
+  timeZone: string,
+): Date {
+  const localAsUtcMillis = Date.UTC(year, month - 1, day, hour, minute, 0)
+  let utcMillis = localAsUtcMillis
+
+  // Iterate offset resolution to handle DST boundaries robustly.
+  for (let i = 0; i < 2; i++) {
+    const offsetMinutes = getTimeZoneOffsetMinutes(new Date(utcMillis), timeZone)
+    utcMillis = localAsUtcMillis - offsetMinutes * 60_000
+  }
+
+  return new Date(utcMillis)
+}
+
+function getTimeZoneOffsetMinutes(date: Date, timeZone: string): number {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+
+  const parts = formatter.formatToParts(date)
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value])) as Record<string, string>
+
+  const asUtc = Date.UTC(
+    Number(values.year),
+    Number(values.month) - 1,
+    Number(values.day),
+    Number(values.hour),
+    Number(values.minute),
+    Number(values.second),
+  )
+
+  return (asUtc - date.getTime()) / 60_000
 }

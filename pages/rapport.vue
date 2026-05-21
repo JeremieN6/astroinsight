@@ -1,49 +1,64 @@
 <template>
-  <section class="min-h-screen py-16 sm:py-20">
+  <section class="min-h-screen pb-16 pt-20 sm:pb-20 sm:pt-24">
     <div class="section-shell">
-      <div class="mx-auto max-w-2xl">
-
-        <!-- Step indicator -->
-        <div class="mb-10 flex items-center justify-center gap-2">
-          <div v-for="(s, i) in 3" :key="i" class="flex items-center gap-2">
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-full border text-xs font-semibold transition-all duration-300"
-              :class="step > i ? 'border-amber-400 bg-amber-400/20 text-amber-400' : step === i ? 'border-amber-400/60 bg-amber-400/10 text-amber-400' : 'border-white/10 bg-white/5 text-slate-500'"
-            >
-              <svg v-if="step > i" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-              </svg>
-              <span v-else>{{ i + 1 }}</span>
-            </div>
-            <div v-if="i < 2" class="h-px w-8 sm:w-12 transition-all duration-300" :class="step > i ? 'bg-amber-400/40' : 'bg-white/10'" />
-          </div>
-        </div>
-
-        <!-- STEP 0 — Form -->
-        <Transition name="fade-up" mode="out-in">
-          <div v-if="step === 0" key="form" class="glass-panel p-7 sm:p-10">
-            <h1 class="font-display text-2xl sm:text-3xl font-semibold text-white mb-2">
-              Votre thème natal
+      <Transition name="fade-up" mode="out-in">
+        <div v-if="step === 0" key="form" class="mx-auto max-w-3xl">
+          <header class="mb-8 text-center sm:mb-10">
+            <p class="eyebrow mb-3">Theme natal</p>
+            <h1 class="font-display text-4xl text-white sm:text-6xl">
+              Votre <span class="text-amber-300">carte du ciel</span>
             </h1>
-            <p class="text-slate-400 text-sm mb-8">Renseignez vos informations pour calculer votre thème natal complet.</p>
+            <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+              Decouvrez les influences celestes qui guident votre chemin de vie,
+              vos relations et votre potentiel cache.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400 sm:gap-6">
+              <span class="inline-flex items-center gap-2"><span class="text-amber-300">🔒</span> Donnees privees</span>
+              <span class="inline-flex items-center gap-2"><span class="text-amber-300">⚡</span> Resultat en 30s</span>
+              <span class="inline-flex items-center gap-2"><span class="text-amber-300">✦</span> 100% gratuit</span>
+            </div>
+          </header>
 
-            <form class="space-y-5" @submit.prevent="calculate">
-              <!-- Name -->
+          <div class="glass-panel relative overflow-hidden border border-white/15 p-6 sm:p-8">
+            <div class="pointer-events-none absolute -top-20 right-0 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl" />
+            <p class="eyebrow mb-2">Theme natal</p>
+            <h2 class="font-display text-3xl leading-tight text-white sm:text-4xl">Commencer ma lecture astrale</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-300">
+              Entrez vos donnees de naissance pour generer votre theme natal personnalise.
+              L'heure est optionnelle mais permet de calculer votre ascendant.
+            </p>
+
+            <form class="mt-8 space-y-5" @submit.prevent="calculate">
               <div>
-                <label class="block text-xs text-slate-400 mb-1.5 tracking-[0.15em] uppercase">Prénom</label>
+                <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Prenom</label>
                 <input
                   v-model="form.firstName"
                   type="text"
                   class="form-input"
-                  placeholder="Votre prénom"
+                  placeholder="Marie"
                   required
                 />
               </div>
 
-              <!-- Birth date + time -->
-              <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
+                  Email
+                  <span class="normal-case tracking-normal text-slate-500">(optionnel, recommande)</span>
+                </label>
+                <input
+                  v-model="form.email"
+                  type="email"
+                  class="form-input"
+                  placeholder="marie@email.com"
+                />
+                <p class="mt-1 text-[11px] text-slate-500">
+                  Utilisez la meme adresse lors du paiement pour retrouver vos acces premium sur un autre appareil.
+                </p>
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label class="block text-xs text-slate-400 mb-1.5 tracking-[0.15em] uppercase">Date de naissance</label>
+                  <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Date de naissance</label>
                   <input
                     v-model="form.birthDate"
                     type="date"
@@ -52,39 +67,47 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-xs text-slate-400 mb-1.5 tracking-[0.15em] uppercase">Heure (optionnel)</label>
+                  <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Heure de naissance <span class="normal-case tracking-normal text-slate-500">(optionnel)</span></label>
                   <input
                     v-model="form.birthTime"
                     type="time"
                     class="form-input"
+                    :disabled="unknownBirthTime"
                   />
                 </div>
               </div>
 
-              <!-- City autocomplete -->
+              <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-slate-300 transition-colors hover:bg-white/10">
+                <input v-model="unknownBirthTime" type="checkbox" class="mt-1 h-4 w-4 rounded border-white/30 bg-transparent text-amber-400" />
+                <span>
+                  Je ne connais pas l'heure exacte
+                  <span class="mt-1 block text-xs text-slate-500">L'ascendant ne sera pas calcule - les autres positions restent precises.</span>
+                </span>
+              </label>
+
               <div class="relative">
-                <label class="block text-xs text-slate-400 mb-1.5 tracking-[0.15em] uppercase">Lieu de naissance</label>
+                <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Ville de naissance</label>
                 <input
                   v-model="cityQuery"
                   type="text"
                   class="form-input pr-10"
-                  placeholder="Ville, pays..."
+                  placeholder="Paris, France"
                   autocomplete="off"
                   @input="debouncedGeoSearch"
+                  required
                 />
-                <div v-if="geoLoading" class="absolute right-3 top-[38px]">
-                  <svg class="animate-spin h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                <div v-if="geoLoading" class="absolute right-3 top-[41px]">
+                  <svg class="h-4 w-4 animate-spin text-slate-500" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                   </svg>
                 </div>
 
-                <!-- Dropdown -->
-                <ul v-if="geoResults.length > 0" class="absolute z-20 mt-1 w-full rounded-2xl border border-white/10 bg-[rgba(10,10,26,0.95)] backdrop-blur-xl overflow-hidden shadow-[0_8px_32px_rgba(10,10,26,0.6)]">
+                <ul v-if="geoResults.length > 0" class="absolute z-20 mt-1 w-full overflow-hidden rounded-2xl border border-white/10 bg-[rgba(10,10,26,0.96)] shadow-[0_8px_32px_rgba(10,10,26,0.6)] backdrop-blur-xl">
                   <li
                     v-for="r in geoResults"
                     :key="r.place_id"
-                    class="cursor-pointer px-4 py-3 text-sm text-slate-300 hover:bg-white/10 hover:text-white transition-colors"
+                    class="cursor-pointer px-4 py-3 text-sm text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                     @click="selectCity(r)"
                   >
                     {{ r.display_name }}
@@ -92,73 +115,41 @@
                 </ul>
               </div>
 
-              <!-- Gender -->
-              <div>
-                <label class="block text-xs text-slate-400 mb-2 tracking-[0.15em] uppercase">Genre</label>
-                <div class="flex gap-3">
-                  <label
-                    v-for="g in genders"
-                    :key="g.value"
-                    class="flex flex-1 cursor-pointer items-center gap-3 rounded-2xl border p-3 transition-all duration-200"
-                    :class="form.gender === g.value ? 'border-amber-400/40 bg-amber-400/10' : 'border-white/10 bg-white/5 hover:bg-white/10'"
-                  >
-                    <input v-model="form.gender" type="radio" :value="g.value" class="sr-only" />
-                    <span class="text-lg">{{ g.icon }}</span>
-                    <span class="text-sm text-slate-300">{{ g.label }}</span>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Email (optional for premium) -->
-              <div>
-                <label class="block text-xs text-slate-400 mb-1.5 tracking-[0.15em] uppercase">
-                  Email <span class="text-slate-600 normal-case">(pour recevoir votre rapport)</span>
-                </label>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  class="form-input"
-                  placeholder="votre@email.com"
-                />
-              </div>
-
-              <!-- Submit -->
               <button
                 type="submit"
-                class="cta-button w-full justify-center mt-4"
+                class="cta-button mt-3 w-full justify-center"
                 :disabled="calculating"
-                :class="calculating ? 'opacity-60 cursor-not-allowed' : ''"
+                :class="calculating ? 'cursor-not-allowed opacity-60' : ''"
               >
-                <svg v-if="calculating" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                <svg v-if="calculating" class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                 </svg>
-                <span>{{ calculating ? 'Calcul en cours…' : 'Calculer mon thème natal' }}</span>
+                <span>{{ calculating ? 'Calcul en cours...' : '✦ Calculer mon theme natal ✦' }}</span>
               </button>
             </form>
           </div>
-        </Transition>
+        </div>
+      </Transition>
 
-        <!-- STEP 1 — Calculating -->
-        <Transition name="fade-up" mode="out-in">
-          <div v-if="step === 1" key="loading" class="glass-panel p-12 text-center">
+      <Transition name="fade-up" mode="out-in">
+        <div v-if="step === 1" key="loading" class="mx-auto max-w-2xl">
+          <div class="glass-panel p-10 text-center sm:p-12">
             <div class="mb-6 text-6xl animate-drift">✦</div>
-            <h2 class="font-display text-2xl font-semibold text-white mb-3">Calcul en cours…</h2>
-            <p class="text-slate-400 text-sm">Nous calculons vos positions planétaires et générons votre analyse.</p>
+            <h2 class="mb-3 font-display text-2xl font-semibold text-white">Calcul en cours...</h2>
+            <p class="text-sm text-slate-400">Nous calculons vos positions planetaires et generons votre analyse.</p>
             <div class="mt-8 flex justify-center gap-1">
-              <span v-for="i in 3" :key="i" class="h-2 w-2 rounded-full bg-amber-400/60 animate-pulse" :style="`animation-delay: ${i * 200}ms`" />
+              <span v-for="i in 3" :key="i" class="h-2 w-2 animate-pulse rounded-full bg-amber-400/60" :style="`animation-delay: ${i * 200}ms`" />
             </div>
           </div>
-        </Transition>
+        </div>
+      </Transition>
 
-        <!-- STEP 2 — Report -->
-        <Transition name="fade-up" mode="out-in">
-          <div v-if="step === 2 && reportStore.reportData" key="report">
-            <ReportDisplay :report="reportStore.reportData" :is-premium="reportStore.isPremium" />
-          </div>
-        </Transition>
-
-      </div>
+      <Transition name="fade-up" mode="out-in">
+        <div v-if="step === 2 && reportStore.reportData" key="report" class="mx-auto max-w-6xl">
+          <ReportDisplay :report="reportStore.reportData" :is-premium="reportStore.isPremium" />
+        </div>
+      </Transition>
     </div>
   </section>
 </template>
@@ -174,6 +165,7 @@ useSeoMeta({
 const reportStore = useReportStore()
 const step = ref(0)
 const calculating = ref(false)
+const unknownBirthTime = ref(false)
 
 const form = reactive({
   firstName: '',
@@ -190,12 +182,6 @@ const cityQuery = ref('')
 const geoResults = ref<Array<{ place_id: string; display_name: string; lat: string; lon: string }>>([])
 const geoLoading = ref(false)
 let geoTimer: ReturnType<typeof setTimeout> | null = null
-
-const genders = [
-  { value: 'female', icon: '♀', label: 'Féminin' },
-  { value: 'male', icon: '♂', label: 'Masculin' },
-  { value: 'other', icon: '✦', label: 'Autre' },
-]
 
 function debouncedGeoSearch() {
   if (geoTimer) clearTimeout(geoTimer)
@@ -241,7 +227,7 @@ async function calculate() {
       body: {
         firstName: form.firstName,
         birthDate: form.birthDate,
-        birthTime: form.birthTime || '12:00',
+        birthTime: unknownBirthTime.value ? '12:00' : (form.birthTime || '12:00'),
         lat: form.lat,
         lon: form.lon,
         city: form.city,

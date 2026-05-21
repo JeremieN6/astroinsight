@@ -64,6 +64,11 @@ function toDeg(rad: number): number {
   return (rad * 180) / Math.PI
 }
 
+function normalizeDegrees(deg: number): number {
+  const wrapped = deg % 360
+  return wrapped < 0 ? wrapped + 360 : wrapped
+}
+
 /** Solar longitude (ecliptic degrees) */
 export function solarLongitude(jd: number): number {
   const d = J2000(jd)
@@ -121,23 +126,28 @@ export function computeAscendant(jd: number, lat: number, lon: number): { sign: 
   const d = J2000(jd)
   const T = d / 36525
 
-  // Sidereal time at Greenwich (degrees)
-  const ST0 = 100.4606184 + 36000.77004 * T + 0.000387933 * T * T
-  // Local sidereal time
-  const RAMC = toRad(((ST0 + lon + 360 * 3) % 360))
+  // Greenwich mean sidereal time for the exact Julian date.
+  const gmst = normalizeDegrees(
+    280.46061837 +
+      360.98564736629 * d +
+      0.000387933 * T * T -
+      (T * T * T) / 38710000,
+  )
+  const lst = normalizeDegrees(gmst + lon)
+  const theta = toRad(lst)
 
-  // Obliquity of ecliptic
-  const eps = toRad(23.4393 - 0.013 * T)
+  // Mean obliquity of the ecliptic.
+  const eps = toRad(23.439291 - 0.0130042 * T)
   const latRad = toRad(lat)
 
-  // Ascendant longitude
-  const ascRad = Math.atan2(Math.cos(RAMC), -(Math.sin(RAMC) * Math.cos(eps) + Math.tan(latRad) * Math.sin(eps)))
-  let asc = toDeg(ascRad)
-  if (asc < 0) asc += 360
+  // Ecliptic longitude of the eastern horizon intersection.
+  const ascRad = Math.atan2(-Math.cos(theta), Math.sin(theta) * Math.cos(eps) + Math.tan(latRad) * Math.sin(eps))
+  let asc = normalizeDegrees(toDeg(ascRad))
 
-  // Quadrant adjustment
-  const sinRamc = Math.sin(RAMC)
-  if (sinRamc < 0) asc = (asc + 180) % 360
+  // Keep the ascendant on the eastern horizon branch.
+  if (Math.sin(theta) < 0) {
+    asc = normalizeDegrees(asc + 180)
+  }
 
   return degreeToSign(asc)
 }
