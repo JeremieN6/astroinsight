@@ -14,7 +14,7 @@
           v-for="(item, i) in faqs"
           :key="i"
           class="reveal-on-scroll glass-panel group overflow-hidden transition-all duration-300 hover:border-white/20"
-          :style="`transition-delay: ${i * 40}ms`"
+          :style="`transition-delay: ${Number(i) * 40}ms`"
         >
           <button
             class="flex w-full items-center justify-between gap-4 px-7 py-5 text-left transition-colors duration-200"
@@ -89,7 +89,7 @@ const faqs = [
   },
   {
     question: 'Comment fonctionne l\'analyse par intelligence artificielle ?',
-    answer: 'Une fois vos positions planétaires calculées par notre moteur astrologique, nous envoyons un prompt structuré à GPT-4o qui synthétise ces données en un texte personnalisé. L\'IA est guidée par notre base de connaissances en astrologie classique et moderne.',
+    answer: 'Une fois vos positions planétaires calculées par notre moteur astrologique, nous envoyons un prompt structuré à GPT-4o qui synthétise ces données en un texte personnalisé. AstroInsight est guidée par sa base de connaissances en astrologie classique et moderne.',
   },
   {
     question: 'Mes données sont-elles en sécurité ?',

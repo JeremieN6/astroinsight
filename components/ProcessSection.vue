@@ -21,7 +21,7 @@
           v-for="(step, i) in steps"
           :key="step.number"
           class="reveal-on-scroll group relative flex flex-col items-center text-center"
-          :style="`transition-delay: ${i * 100}ms`"
+          :style="`transition-delay: ${Number(i) * 100}ms`"
         >
           <div class="relative mb-8 flex h-16 w-16 items-center justify-center">
             <div
@@ -35,7 +35,7 @@
             </div>
 
             <div
-              v-if="i < steps.length - 1"
+              v-if="Number(i) < steps.length - 1"
               class="absolute -right-4 top-1/2 hidden h-2 w-2 -translate-y-1/2 rounded-full bg-amber-400/50 lg:block"
             />
           </div>
