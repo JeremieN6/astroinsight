@@ -1,0 +1,200 @@
+/* ============================================================
+   AstroInsight — Global Styles
+   ============================================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --color-night: #0a0a1a;
+    --color-void: #0d0d2b;
+    --color-card: rgba(15, 23, 42, 0.52);
+    --color-card-border: hsla(0, 0%, 100%, 0.12);
+    --color-copy: #e2e8f0;
+    --color-copy-muted: #94a3b8;
+    --color-violet: #7c3aed;
+    --color-orchid: #a855f7;
+    --color-gold: #f59e0b;
+    --color-amber: #fbbf24;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: Inter, sans-serif;
+    min-height: 100vh;
+    color: var(--color-copy);
+    background-color: #0a0a1a;
+    background: radial-gradient(circle at top, rgba(124, 58, 237, 0.18), transparent 28%),
+      radial-gradient(circle at 15% 20%, rgba(245, 158, 11, 0.14), transparent 18%),
+      linear-gradient(180deg, var(--color-night), var(--color-void));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.45) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 72% 32%, rgba(251, 191, 36, 0.5) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 42% 64%, rgba(168, 85, 247, 0.45) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 84% 74%, rgba(255, 255, 255, 0.4) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 12% 82%, rgba(255, 255, 255, 0.35) 0 1px, transparent 1.2px),
+      radial-gradient(circle at 58% 8%, rgba(255, 255, 255, 0.35) 0 1px, transparent 1.2px);
+    background-size: 340px 340px, 420px 420px, 380px 380px, 460px 460px, 500px 500px, 560px 560px;
+    opacity: 0.55;
+  }
+
+  #__nuxt {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: Cinzel, serif;
+  }
+
+  ::selection {
+    background: rgba(245, 158, 11, 0.28);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Section shell */
+  .section-shell {
+    @apply mx-auto max-w-7xl w-full px-6 py-8 sm:px-8 lg:px-10;
+  }
+
+  /* Section separator with glow */
+  .section-transition {
+    @apply relative isolate;
+  }
+  .section-transition::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    inset-inline: clamp(1.5rem, 5vw, 4rem);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(168, 85, 247, 0.35) 28%,
+      rgba(251, 191, 36, 0.2) 50%,
+      transparent
+    );
+    opacity: 0.85;
+  }
+
+  /* Glass panel */
+  .glass-panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+    border: 1px solid var(--color-card-border);
+    border-radius: 2rem;
+    box-shadow: 0 24px 80px rgba(10, 10, 26, 0.45);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    @apply text-xs uppercase tracking-[0.38em] text-amber-400;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply font-display text-4xl sm:text-5xl text-white leading-tight;
+  }
+
+  /* CTA Button */
+  .cta-button {
+    @apply inline-flex items-center gap-3 px-6 py-3 rounded-full border border-amber-400/20
+           bg-gradient-to-r from-amber-500 to-amber-400 text-slate-900 text-sm font-semibold
+           uppercase tracking-[0.24em] transition-all duration-300;
+    box-shadow: 0 18px 50px rgba(245, 158, 11, 0.28);
+  }
+  .cta-button:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 22px 60px rgba(245, 158, 11, 0.35);
+  }
+
+  /* Secondary button */
+  .secondary-button {
+    @apply inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/10
+           bg-white/5 text-white text-sm font-semibold uppercase tracking-[0.24em]
+           transition-all duration-300 hover:bg-white/10 hover:border-white/20;
+  }
+
+  /* Form input */
+  .form-input {
+    @apply w-full px-4 py-3 rounded-2xl border border-white/10 bg-slate-950/35
+           text-white placeholder-slate-500 text-base outline-none
+           transition-all duration-150 focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/20;
+  }
+
+  /* Shimmer text */
+  .text-shimmer {
+    background-image: linear-gradient(120deg, #fff, #fbbf24 35%, #fff 50%, #a855f7 70%, #fff);
+    background-size: 220% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: shimmer 8s linear infinite;
+  }
+
+  /* Reveal on scroll */
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 2rem), 0);
+    filter: blur(12px);
+    transition:
+      opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform, filter;
+  }
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateZ(0);
+    filter: blur(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-on-scroll {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+    }
+  }
+
+  /* Star canvas bg */
+  .star-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    color: var(--color-gold);
+  }
+  .bg-gold {
+    background-color: var(--color-gold);
+  }
+  .border-gold {
+    border-color: var(--color-gold);
+  }
+}

@@ -1,0 +1,275 @@
+<template>
+  <section class="min-h-screen pb-16 pt-20 sm:pb-20 sm:pt-24">
+    <div class="section-shell">
+      <Transition name="fade-up" mode="out-in">
+        <div v-if="step === 0" key="form" class="mx-auto max-w-3xl">
+          <header class="mb-8 text-center sm:mb-10">
+            <p class="eyebrow mb-3">Theme natal</p>
+            <h1 class="font-display text-4xl text-white sm:text-6xl">
+              Votre <span class="text-amber-300">carte du ciel</span>
+            </h1>
+            <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+              Decouvrez les influences celestes qui guident votre chemin de vie,
+              vos relations et votre potentiel cache.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400 sm:gap-6">
+              <span class="inline-flex items-center gap-2"><span class="text-amber-300">🔒</span> Donnees privees</span>
+              <span class="inline-flex items-center gap-2"><span class="text-amber-300">⚡</span> Resultat en 30s</span>
+              <span class="inline-flex items-center gap-2"><span class="text-amber-300">✦</span> 100% gratuit</span>
+            </div>
+          </header>
+
+          <div class="glass-panel relative overflow-hidden border border-white/15 p-6 sm:p-8">
+            <div class="pointer-events-none absolute -top-20 right-0 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl" />
+            <p class="eyebrow mb-2">Theme natal</p>
+            <h2 class="font-display text-3xl leading-tight text-white sm:text-4xl">Commencer ma lecture astrale</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-300">
+              Entrez vos donnees de naissance pour generer votre theme natal personnalise.
+              L'heure est optionnelle mais permet de calculer votre ascendant.
+            </p>
+
+            <form class="mt-8 space-y-5" @submit.prevent="calculate">
+              <div>
+                <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Prenom</label>
+                <input
+                  v-model="form.firstName"
+                  type="text"
+                  class="form-input"
+                  placeholder="Marie"
+                  required
+                />
+              </div>
+
+              <div>
+                <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
+                  Email
+                  <span class="normal-case tracking-normal text-slate-500">(optionnel, recommande)</span>
+                </label>
+                <input
+                  v-model="form.email"
+                  type="email"
+                  class="form-input"
+                  placeholder="marie@email.com"
+                />
+                <p class="mt-1 text-[11px] text-slate-500">
+                  Utilisez la meme adresse lors du paiement pour retrouver vos acces premium sur un autre appareil.
+                </p>
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Date de naissance</label>
+                  <input
+                    v-model="form.birthDate"
+                    type="date"
+                    class="form-input"
+                    required
+                  />
+                </div>
+                <div>
+                  <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Heure de naissance <span class="normal-case tracking-normal text-slate-500">(optionnel)</span></label>
+                  <input
+                    v-model="form.birthTime"
+                    type="time"
+                    class="form-input"
+                    :disabled="unknownBirthTime"
+                  />
+                </div>
+              </div>
+
+              <label class="flex cursor-pointer items-start gap-3 rounded-2xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-slate-300 transition-colors hover:bg-white/10">
+                <input v-model="unknownBirthTime" type="checkbox" class="mt-1 h-4 w-4 rounded border-white/30 bg-transparent text-amber-400" />
+                <span>
+                  Je ne connais pas l'heure exacte
+                  <span class="mt-1 block text-xs text-slate-500">L'ascendant ne sera pas calcule - les autres positions restent precises.</span>
+                </span>
+              </label>
+
+              <div class="relative">
+                <label class="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-400">Ville de naissance</label>
+                <input
+                  v-model="cityQuery"
+                  type="text"
+                  class="form-input pr-10"
+                  placeholder="Paris, France"
+                  autocomplete="off"
+                  @input="debouncedGeoSearch"
+                  required
+                />
+                <div v-if="geoLoading" class="absolute right-3 top-[41px]">
+                  <svg class="h-4 w-4 animate-spin text-slate-500" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  </svg>
+                </div>
+
+                <ul v-if="geoResults.length > 0" class="absolute z-20 mt-1 w-full overflow-hidden rounded-2xl border border-white/10 bg-[rgba(10,10,26,0.96)] shadow-[0_8px_32px_rgba(10,10,26,0.6)] backdrop-blur-xl">
+                  <li
+                    v-for="r in geoResults"
+                    :key="r.place_id"
+                    class="cursor-pointer px-4 py-3 text-sm text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                    @click="selectCity(r)"
+                  >
+                    {{ r.display_name }}
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                type="submit"
+                class="cta-button mt-3 w-full justify-center"
+                :disabled="calculating"
+                :class="calculating ? 'cursor-not-allowed opacity-60' : ''"
+              >
+                <svg v-if="calculating" class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                <span>{{ calculating ? 'Calcul en cours...' : '✦ Calculer mon theme natal ✦' }}</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </Transition>
+
+      <Transition name="fade-up" mode="out-in">
+        <div v-if="step === 1" key="loading" class="mx-auto max-w-2xl">
+          <div class="glass-panel p-10 text-center sm:p-12">
+            <div class="mb-6 text-6xl animate-drift">✦</div>
+            <h2 class="mb-3 font-display text-2xl font-semibold text-white">Calcul en cours...</h2>
+            <p class="text-sm text-slate-400">Nous calculons vos positions planetaires et generons votre analyse.</p>
+            <div class="mt-8 flex justify-center gap-1">
+              <span v-for="i in 3" :key="i" class="h-2 w-2 animate-pulse rounded-full bg-amber-400/60" :style="`animation-delay: ${i * 200}ms`" />
+            </div>
+          </div>
+        </div>
+      </Transition>
+
+      <Transition name="fade-up" mode="out-in">
+        <div v-if="step === 2 && reportStore.reportData" key="report" class="mx-auto max-w-6xl">
+          <ReportDisplay :report="reportStore.reportData" :is-premium="reportStore.isPremium" />
+        </div>
+      </Transition>
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+import ReportDisplay from '~/components/ReportDisplay.vue'
+
+useSeoMeta({
+  title: 'Mon Thème Natal — AstroInsights',
+  description: 'Calculez votre thème natal complet avec signe solaire, lunaire, ascendant et 10 planètes analysés par IA.',
+})
+
+const reportStore = useReportStore()
+const step = ref(0)
+const calculating = ref(false)
+const unknownBirthTime = ref(false)
+
+onMounted(() => {
+  reportStore.initFromStorage()
+  if (reportStore.userEmail) {
+    reportStore.syncPremiumStatusFromServer(reportStore.userEmail)
+  }
+})
+
+const form = reactive({
+  firstName: '',
+  birthDate: '',
+  birthTime: '',
+  gender: 'other',
+  email: '',
+  lat: null as number | null,
+  lon: null as number | null,
+  city: '',
+})
+
+const cityQuery = ref('')
+const geoResults = ref<Array<{ place_id: string; display_name: string; lat: string; lon: string }>>([])
+const geoLoading = ref(false)
+let geoTimer: ReturnType<typeof setTimeout> | null = null
+
+function debouncedGeoSearch() {
+  if (geoTimer) clearTimeout(geoTimer)
+  geoTimer = setTimeout(geoSearch, 350)
+}
+
+async function geoSearch() {
+  const q = cityQuery.value.trim()
+  if (q.length < 2) { geoResults.value = []; return }
+  geoLoading.value = true
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&addressdetails=0`, {
+      headers: { 'Accept-Language': 'fr' },
+    })
+    geoResults.value = await res.json()
+  } catch {
+    geoResults.value = []
+  } finally {
+    geoLoading.value = false
+  }
+}
+
+function selectCity(r: { place_id: string; display_name: string; lat: string; lon: string }) {
+  form.lat = parseFloat(r.lat)
+  form.lon = parseFloat(r.lon)
+  form.city = r.display_name
+  cityQuery.value = r.display_name
+  geoResults.value = []
+}
+
+async function calculate() {
+  if (!form.lat || !form.lon) {
+    alert('Veuillez sélectionner votre lieu de naissance dans la liste.')
+    return
+  }
+
+  calculating.value = true
+  step.value = 1
+
+  try {
+    const res = await $fetch('/api/generate-report', {
+      method: 'POST',
+      body: {
+        firstName: form.firstName,
+        birthDate: form.birthDate,
+        birthTime: unknownBirthTime.value ? '12:00' : (form.birthTime || '12:00'),
+        lat: form.lat,
+        lon: form.lon,
+        city: form.city,
+        gender: form.gender,
+        email: form.email,
+      },
+    })
+
+    reportStore.setReportData(res as Record<string, unknown>)
+    if (form.email) {
+      reportStore.setUserEmail(form.email)
+      reportStore.syncPremiumStatusFromServer(form.email)
+    }
+    step.value = 2
+  } catch (err) {
+    console.error(err)
+    step.value = 0
+    alert('Une erreur s\'est produite. Veuillez réessayer.')
+  } finally {
+    calculating.value = false
+  }
+}
+</script>
+
+<style scoped>
+.fade-up-enter-active,
+.fade-up-leave-active {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fade-up-enter-from {
+  opacity: 0;
+  transform: translateY(1.5rem);
+}
+.fade-up-leave-to {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+}
+</style>
