@@ -43,7 +43,7 @@ class NewsletterController extends AbstractController
                     (new Email())
                         ->from($admin)
                         ->to($admin)
-                        ->subject('[AstroInsight] Nouvelle inscription newsletter')
+                        ->subject('[Stellara] Nouvelle inscription newsletter')
                         ->text("Nouvelle inscription: $email")
                 );
             }

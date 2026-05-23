@@ -19,7 +19,7 @@ final class HomeController extends AbstractController
     {
         $plans = $planRepository->findAll();
         return $this->render('home/index.html.twig', [
-            'page_title' => 'AstroInsight – Astrologie de précision',
+            'page_title' => 'Stellara – Astrologie de précision',
             'meta_description' => 'Horoscope quotidien personnalisé, aspects clés et scores d’énergie pour mieux décider.',
             'plans' => $plans,
         ]);
@@ -31,7 +31,7 @@ final class HomeController extends AbstractController
         // La sécurité est gérée par security.yaml (ROLE_USER requis)
         // Pas besoin de vérification manuelle ici
         return $this->render('estimation/index.html.twig', [
-            'page_title' => 'AstroInsight - Générateur d\'horoscope quotidien et d\'analyse approfondies',
+            'page_title' => 'Stellara - Générateur d\'horoscope quotidien et d\'analyse approfondies',
             'meta_description' => 'Application qui se distingue par ses fonctionnalités d\'analyse comportementale et de prédiction des opportunités personnelles.',
         ]);
     }
@@ -66,7 +66,7 @@ final class HomeController extends AbstractController
     $downloadsCount = $quoteRepository->sumDownloadsByUser($user);
 
         return $this->render('main/dashboard.html.twig', [
-            'page_title' => 'Tableau de bord - AstroInsight',
+            'page_title' => 'Tableau de bord - Stellara',
             'meta_description' => 'Paramétrez votre profil astrologique et accédez à votre tableau de bord.',
             'user' => $user,
             'profileForm' => $profileForm->createView(),
@@ -81,7 +81,7 @@ final class HomeController extends AbstractController
     public function privacyPolicy(): Response
     {
         return $this->render('components/privacy-policy.html.twig', [
-            'page_title' => 'AstroInsight - Générateur d\'horoscope quotidien et d\'analyse approfondies',
+            'page_title' => 'Stellara - Générateur d\'horoscope quotidien et d\'analyse approfondies',
             'meta_description' => 'Application qui se distingue par ses fonctionnalités d\'analyse comportementale et de prédiction des opportunités personnelles.',
         ]);
     }

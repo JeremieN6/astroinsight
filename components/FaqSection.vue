@@ -50,7 +50,7 @@
       <div class="reveal-on-scroll mt-14 text-center">
         <p class="text-slate-400">Vous avez d'autres questions ?</p>
         <a
-          href="mailto:contact@astroinsights.fr"
+          href="mailto:contact.stellara@sassify.fr"
           class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-amber-400 transition-colors hover:text-amber-300"
         >
           Contactez-nous
@@ -89,7 +89,7 @@ const faqs = [
   },
   {
     question: 'Comment fonctionne l\'analyse par intelligence artificielle ?',
-    answer: 'Une fois vos positions planétaires calculées par notre moteur astrologique, nous envoyons un prompt structuré à GPT-4o qui synthétise ces données en un texte personnalisé. AstroInsight est guidée par sa base de connaissances en astrologie classique et moderne.',
+    answer: 'Une fois vos positions planétaires calculées par notre moteur astrologique, nous envoyons un prompt structuré à GPT-4o qui synthétise ces données en un texte personnalisé. Stellara est guidée par sa base de connaissances en astrologie classique et moderne.',
   },
   {
     question: 'Mes données sont-elles en sécurité ?',

@@ -31,7 +31,7 @@
 import { onMounted, useHead } from '#imports'
 import { useReportStore } from '~/stores/report'
 
-useHead({ title: 'Paiement réussi — AstroInsights' })
+useHead({ title: 'Paiement réussi — Stellara' })
 
 const reportStore = useReportStore()
 const route = useRoute()

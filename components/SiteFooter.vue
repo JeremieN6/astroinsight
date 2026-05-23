@@ -22,7 +22,7 @@
                 </defs>
               </svg>
             </span>
-            <span class="font-display text-base tracking-[0.2em] text-white">AstroInsights</span>
+            <span class="font-display text-base tracking-[0.2em] text-white">Stellara</span>
           </div>
 
           <p class="max-w-xs text-sm leading-6 text-slate-400">
@@ -64,7 +64,7 @@
               <a href="#" class="text-sm text-slate-400 transition hover:text-white">CGV</a>
             </li>
             <li>
-              <a href="mailto:contact@astroinsights.fr" class="text-sm text-slate-400 transition hover:text-white">Contact</a>
+              <a href="mailto:contact.stellara@sassify.fr" class="text-sm text-slate-400 transition hover:text-white">Contact</a>
             </li>
           </ul>
         </div>
@@ -90,7 +90,7 @@
       </div>
 
       <div class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
-        <p class="text-center text-sm text-slate-500 sm:text-left">© {{ year }} AstroInsights - Tous droits réservés.</p>
+        <p class="text-center text-sm text-slate-500 sm:text-left">© {{ year }} Stellara - Tous droits réservés.</p>
         <p class="text-center text-xs text-slate-600 sm:text-right">Construit avec 💖 sous les étoiles ✨</p>
       </div>
     </div>

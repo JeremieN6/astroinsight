@@ -6,8 +6,8 @@
       <div class="glass-panel p-8 sm:p-10 space-y-8 text-slate-300 leading-7 text-sm">
         <div>
           <h2 class="font-display text-lg text-white mb-3">Éditeur du site</h2>
-          <p>AstroInsights est un service édité par une personne physique.</p>
-          <p class="mt-2">Contact : <a href="mailto:contact@astroinsights.fr" class="text-amber-400 hover:text-amber-300">contact@astroinsights.fr</a></p>
+          <p>Stellara est un service édité par une personne physique.</p>
+          <p class="mt-2">Contact : <a href="mailto:contact.stellara@sassify.fr" class="text-amber-400 hover:text-amber-300">contact.stellara@sassify.fr</a></p>
         </div>
 
         <div>
@@ -19,7 +19,7 @@
           <h2 class="font-display text-lg text-white mb-3">Propriété intellectuelle</h2>
           <p>
             Tous les contenus présents sur ce site (textes, images, logos) sont la propriété exclusive
-            d'AstroInsights et sont protégés par les lois relatives à la propriété intellectuelle.
+            d'Stellara et sont protégés par les lois relatives à la propriété intellectuelle.
             Toute reproduction, même partielle, est strictement interdite sans autorisation préalable.
           </p>
         </div>
@@ -45,7 +45,7 @@
         <div>
           <h2 class="font-display text-lg text-white mb-3">Responsabilité</h2>
           <p>
-            Les thèmes natals et analyses astrologiques fournis par AstroInsights sont proposés à titre
+            Les thèmes natals et analyses astrologiques fournis par Stellara sont proposés à titre
             divertissant et indicatif uniquement. Ils ne constituent pas un conseil professionnel de quelque
             nature que ce soit.
           </p>
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Mentions légales — AstroInsights',
+  title: 'Mentions légales — Stellara',
   robots: 'noindex',
 })
 </script>

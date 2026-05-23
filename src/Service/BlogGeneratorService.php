@@ -24,7 +24,7 @@ class BlogGeneratorService
         $defaultTopics = [
             "Aller au‑delà de l'horoscope : analyser ses dynamiques personnelles",
             "Fenêtres d’opportunités : comment les repérer et les utiliser au quotidien",
-            "Méthode AstroInsight : scores, leviers et focus de la semaine",
+            "Méthode Stellara : scores, leviers et focus de la semaine",
             "Aspects clés du jour : agir quand l’énergie est favorable",
             "Mercure rétrograde sans panique : check‑list pragmatique",
             "Mars et productivité : canaliser l’énergie sans s’épuiser",
@@ -33,7 +33,7 @@ class BlogGeneratorService
             "Planifier ses objectifs trimestriels avec ses cycles personnels",
             "Lire sa météo intérieure : prendre de meilleures décisions au bon moment",
             "Compatibilité d’équipe : synchroniser réunions et sprints avec l’énergie du moment",
-            "Rituel hebdo en 10 minutes : faire le point avec AstroInsight",
+            "Rituel hebdo en 10 minutes : faire le point avec Stellara",
             "Limites de l’astrologie appliquée : ce qu’on mesure et ce qu’on ne promet pas",
             "Cas pratiques avant/après : le ROI personnel d’un meilleur timing",
             "Devenir antifragile : utiliser les périodes de tension pour progresser",
@@ -110,11 +110,11 @@ class BlogGeneratorService
             "---\n\n" .
             "Tu es un rédacteur spécialisé en astrologie appliquée et pédagogie. Rédige un article sur : \"$topic\".\n\n" .
             "AUDIENCE : Curieux exigeants, indépendants, entrepreneurs, managers et équipes produit — des personnes orientées décision qui veulent des repères concrets.\n" .
-            "CONTEXTE : AstroInsight est une application d’astrologie analytique qui transforme l’activité astrologique pertinente et le thème natal en tableau de bord personnel (scores, tendances, fenêtres d’opportunités).\n\n" .
+            "CONTEXTE : Stellara est une application d’astrologie analytique qui transforme l’activité astrologique pertinente et le thème natal en tableau de bord personnel (scores, tendances, fenêtres d’opportunités).\n\n" .
             "STRUCTURE : 5-6 sections avec <h2>\n" .
             "STYLE : Clair, pragmatique, non fataliste. Exemples concrets du quotidien pro/perso, conseils actionnables. Ajoute quelques emojis avec parcimonie. Invente des exemples avant/après (avec chiffres, contexte) pour illustrer les points clés quand c’est utile.\n\n" .
             "RÈGLE ABSOLUE : Utilise UNIQUEMENT <h2>, <p>, <ul>, <ol>. JAMAIS de <div> ni <span>.\n\n" .
-            "Écris un article de 800-1400 mots avec 5-6 sections <h2>. Intègre naturellement les notions : astrologie appliquée, analyse comportementale, aspects, cycles personnels, opportunités, méthode, limites.\nÀ la fin, ajoute un call-to-action pour découvrir AstroInsight ou un conseil actionnable pour lire sa ‘météo intérieure’.\n\n" .
+            "Écris un article de 800-1400 mots avec 5-6 sections <h2>. Intègre naturellement les notions : astrologie appliquée, analyse comportementale, aspects, cycles personnels, opportunités, méthode, limites.\nÀ la fin, ajoute un call-to-action pour découvrir Stellara ou un conseil actionnable pour lire sa ‘météo intérieure’.\n\n" .
             "RÉPONSE JSON EXACTE :\n" .
             "{\n    \"titre\": \"Titre SEO optimisé (50-60 caractères)\",\n    \"slug\": \"slug-seo-automatique\",\n    \"contenu\": \"HTML complet avec structure préservée\",\n    \"auteur\": \"Jérémie N.\",\n    \"metaDescription\": \"Description SEO 150-160 caractères\",\n    \"motsCles\": [\"astrologie appliquée\", \"analyse comportementale\", \"opportunités personnelles\"]\n}\n\n" .
             "IMPÉRATIF : L'article doit traiter des décisions concrètes (timing, énergie/temps, qualité d’exécution, ROI personnel) avec des exemples crédibles. Préserve exactement le formatage HTML généré.";

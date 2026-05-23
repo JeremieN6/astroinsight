@@ -1,6 +1,6 @@
-# 🌌 AstroInsights
+# 🌌 Stellara
 
-**AstroInsights** est une application web innovante qui dépasse le simple horoscope quotidien.  
+**Stellara** est une application web innovante qui dépasse le simple horoscope quotidien.  
 Elle propose une **analyse astrologique personnalisée**, basée sur le thème natal complet de l’utilisateur (date, heure, lieu de naissance), et enrichie d’outils interactifs pour mieux comprendre les cycles planétaires, les opportunités personnelles et les dynamiques relationnelles.  
 
 🚀 Développée en **Symfony (backend)** et **Vue.js (frontend)**, l’application s’appuie sur des APIs astrologiques fiables pour générer des insights riches et engageants.
@@ -9,10 +9,10 @@ Elle propose une **analyse astrologique personnalisée**, basée sur le thème n
 
 ## ✨ Vision & Proposition de valeur
 
-AstroInsights ambitionne de créer un **pont entre la tradition astrologique et la technologie moderne**.  
+Stellara ambitionne de créer un **pont entre la tradition astrologique et la technologie moderne**.  
 L’objectif est de rendre l’astrologie **interactive, visuelle et personnalisée**, au-delà des simples horoscopes généralistes.
 
-- 🌠 **Différenciation** : là où la majorité des apps se limitent à un horoscope quotidien, AstroInsights propose des **analyses profondes**, des **visualisations claires** et des **rapports personnalisés**.  
+- 🌠 **Différenciation** : là où la majorité des apps se limitent à un horoscope quotidien, Stellara propose des **analyses profondes**, des **visualisations claires** et des **rapports personnalisés**.  
 - 👥 **Engagement communautaire** : en offrant compatibilité, comparaisons et conseils relationnels, l’app vise à fédérer une communauté active autour de l’astrologie.  
 - 💡 **Valeur ajoutée** : insights psychologiques, cycles planétaires, biorythmes et notifications intelligentes aident l’utilisateur à prendre de meilleures décisions au quotidien.  
 
@@ -89,8 +89,8 @@ L’objectif est de rendre l’astrologie **interactive, visuelle et personnalis
 
 ### 1. Cloner le dépôt
 ```bash
-git clone https://github.com/ton-compte/astroinsights.git
-cd astroinsights
+git clone https://github.com/ton-compte/Stellara.git
+cd Stellara
 ```
 
 2. Installer les dépendances Symfony
@@ -106,7 +106,7 @@ env
 Copier le code
 APP_ENV=dev
 APP_SECRET=your_secret_key
-DATABASE_URL="mysql://user:password@127.0.0.1:3306/astroinsights"
+DATABASE_URL="mysql://user:password@127.0.0.1:3306/Stellara"
 ASTRO_API_KEY=your_api_key_here
 
 4. Créer la base de données & lancer les migrations
@@ -147,7 +147,7 @@ Projet distribué sous licence MIT.
 Libre à toi de l’utiliser, le modifier et le partager.
 
 🌠 Conclusion
-AstroInsights offre une expérience riche et personnalisée, permettant aux utilisateurs d’aller au-delà des horoscopes quotidiens traditionnels.
+Stellara offre une expérience riche et personnalisée, permettant aux utilisateurs d’aller au-delà des horoscopes quotidiens traditionnels.
 En combinant précision des calculs astrologiques, analyses comportementales et visualisations modernes, l’application ambitionne de devenir la référence digitale de l’astrologie interactive.
 
 👨‍💻 Développé avec ❤️ par @jeremiecode (contact: contact@jeremiecode.fr).

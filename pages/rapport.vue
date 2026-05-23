@@ -158,7 +158,7 @@
 import ReportDisplay from '~/components/ReportDisplay.vue'
 
 useSeoMeta({
-  title: 'Mon Thème Natal — AstroInsights',
+  title: 'Mon Thème Natal — Stellara',
   description: 'Calculez votre thème natal complet avec signe solaire, lunaire, ascendant et 10 planètes analysés par IA.',
 })
 

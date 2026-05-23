@@ -28,7 +28,7 @@
           </svg>
         </span>
         <span class="font-display text-lg tracking-[0.2em] text-white transition-colors duration-300 group-hover:text-amber-400">
-          AstroInsight
+          Stellara
         </span>
       </NuxtLink>
 

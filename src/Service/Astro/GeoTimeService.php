@@ -30,7 +30,7 @@ class GeoTimeService
             try {
                 $response = $this->httpClient->request('GET', 'https://nominatim.openstreetmap.org/search', [
                     'query' => ['format' => 'json', 'limit' => 1, 'q' => $place],
-                    'headers' => ['User-Agent' => 'AstroInsight/1.0 (contact@example.com)']
+                    'headers' => ['User-Agent' => 'Stellara/1.0 (contact@example.com)']
                 ]);
                 $arr = $response->toArray(false);
                 if (is_array($arr) && isset($arr[0]['lat'], $arr[0]['lon'])) {

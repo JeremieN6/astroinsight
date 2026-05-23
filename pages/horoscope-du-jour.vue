@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Horoscope du jour - AstroInsights',
+  title: 'Horoscope du jour - Stellara',
   description: 'Consultez votre horoscope du jour par signe: amour, travail, energie et conseil astrologique.',
 })
 
@@ -149,12 +149,12 @@ function signLabel(value: SignValue): string {
 
 function saveSignPreference() {
   if (!import.meta.client) return
-  localStorage.setItem('astroinsight_sign', selectedSign.value)
+  localStorage.setItem('Stellara_sign', selectedSign.value)
 }
 
 function loadSignPreference() {
   if (!import.meta.client) return
-  const saved = localStorage.getItem('astroinsight_sign')
+  const saved = localStorage.getItem('Stellara_sign')
   if (saved && signs.some((item) => item.value === saved)) {
     selectedSign.value = saved as SignValue
   }

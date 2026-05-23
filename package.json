@@ -1,7 +1,7 @@
 {
-  "name": "astroinsight",
+  "name": "Stellara",
   "version": "1.0.0",
-  "description": "AstroInsight — Thème Natal Personnalisé par IA",
+  "description": "Stellara — Thème Natal Personnalisé par IA",
   "private": true,
   "type": "module",
   "scripts": {

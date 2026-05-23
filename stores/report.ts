@@ -11,14 +11,14 @@ export const useReportStore = defineStore('report', {
     unlockPremium() {
       this.isPremium = true
       if (import.meta.client) {
-        localStorage.setItem('astroinsight_premium', '1')
+        localStorage.setItem('Stellara_premium', '1')
       }
     },
 
     setPremiumStatus(val: boolean) {
       this.isPremium = val
       if (import.meta.client) {
-        localStorage.setItem('astroinsight_premium', val ? '1' : '0')
+        localStorage.setItem('Stellara_premium', val ? '1' : '0')
       }
     },
 
@@ -29,7 +29,7 @@ export const useReportStore = defineStore('report', {
     setUserEmail(email: string) {
       this.userEmail = email.trim().toLowerCase()
       if (import.meta.client && this.userEmail) {
-        localStorage.setItem('astroinsight_email', this.userEmail)
+        localStorage.setItem('Stellara_email', this.userEmail)
       }
     },
 
@@ -49,8 +49,8 @@ export const useReportStore = defineStore('report', {
 
     initFromStorage() {
       if (import.meta.client) {
-        this.isPremium = localStorage.getItem('astroinsight_premium') === '1'
-        this.userEmail = localStorage.getItem('astroinsight_email') || ''
+        this.isPremium = localStorage.getItem('Stellara_premium') === '1'
+        this.userEmail = localStorage.getItem('Stellara_email') || ''
       }
     },
   },

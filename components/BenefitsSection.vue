@@ -2,7 +2,7 @@
   <section id="benefits" class="section-transition scroll-mt-24 py-20 sm:py-24">
     <div class="section-shell">
     <div class="mx-auto mb-16 max-w-3xl text-center">
-      <p class="eyebrow reveal-on-scroll mb-4">Pourquoi AstroInsight ?</p>
+      <p class="eyebrow reveal-on-scroll mb-4">Pourquoi Stellara ?</p>
       <h2 class="section-title reveal-on-scroll mx-auto max-w-3xl">
         L'astrologie de précision, accessible à tous
       </h2>
