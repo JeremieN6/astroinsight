@@ -37,7 +37,7 @@
               <NuxtLink to="/" class="text-sm text-slate-400 transition hover:text-white">Accueil</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/#benefits" class="text-sm text-slate-400 transition hover:text-white">Fonctionnalités</NuxtLink>
+              <NuxtLink to="/#benefits" class="text-sm text-slate-400 transition hover:text-white">Pourquoi Stellara</NuxtLink>
             </li>
             <li>
               <NuxtLink to="/#how-it-works" class="text-sm text-slate-400 transition hover:text-white">Comment ça marche</NuxtLink>
@@ -49,7 +49,12 @@
               <NuxtLink to="/horoscope-du-jour" class="text-sm text-slate-400 transition hover:text-white">Horoscope du jour</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/blog" class="text-sm text-slate-400 transition hover:text-white">Blog</NuxtLink>
+              <span class="inline-flex cursor-not-allowed items-center gap-2 text-sm text-slate-500" aria-disabled="true" title="Le blog arrive bientôt">
+                <span>Blog</span>
+                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                  Bientôt
+                </span>
+              </span>
             </li>
           </ul>
         </div>

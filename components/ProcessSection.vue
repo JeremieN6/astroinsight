@@ -2,7 +2,7 @@
   <section id="how-it-works" class="section-transition scroll-mt-24 py-20 sm:py-24">
     <div class="section-shell">
     <div class="mx-auto mb-16 max-w-3xl text-center">
-      <p class="eyebrow reveal-on-scroll mb-4">Parcours</p>
+      <p class="eyebrow reveal-on-scroll mb-4">Comment ca marche</p>
       <h2 class="section-title reveal-on-scroll mx-auto max-w-2xl">
         3 étapes vers votre destinée
       </h2>

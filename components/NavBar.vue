@@ -33,14 +33,26 @@
       </NuxtLink>
 
       <div class="hidden items-center gap-8 md:flex">
-        <NuxtLink
-          v-for="link in navLinks"
-          :key="link.href"
-          :to="link.href"
-          class="relative pb-0.5 text-sm text-slate-300 transition-colors duration-200 hover:text-white after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-amber-400 after:transition-all after:duration-300 hover:after:w-full"
-        >
-          {{ link.label }}
-        </NuxtLink>
+        <template v-for="link in navLinks" :key="link.label">
+          <NuxtLink
+            v-if="!link.disabled"
+            :to="link.href"
+            class="relative pb-0.5 text-sm text-slate-300 transition-colors duration-200 hover:text-white after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-amber-400 after:transition-all after:duration-300 hover:after:w-full"
+          >
+            {{ link.label }}
+          </NuxtLink>
+          <span
+            v-else
+            class="inline-flex cursor-not-allowed items-center gap-2 pb-0.5 text-sm text-slate-500"
+            aria-disabled="true"
+            :title="link.disabledLabel"
+          >
+            <span>{{ link.label }}</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">
+              Bientot
+            </span>
+          </span>
+        </template>
       </div>
 
       <div class="flex items-center gap-3">
@@ -87,15 +99,26 @@
     <Transition name="slide-down">
       <div v-if="menuOpen" class="border-t border-white/10 bg-[rgba(10,10,26,0.95)] px-6 py-4 md:hidden">
         <nav class="flex flex-col gap-4">
-          <NuxtLink
-            v-for="link in navLinks"
-            :key="`mobile-${link.href}`"
-            :to="link.href"
-            class="text-sm text-slate-300 transition-colors hover:text-white"
-            @click="menuOpen = false"
-          >
-            {{ link.label }}
-          </NuxtLink>
+          <template v-for="link in navLinks" :key="`mobile-${link.label}`">
+            <NuxtLink
+              v-if="!link.disabled"
+              :to="link.href"
+              class="text-sm text-slate-300 transition-colors hover:text-white"
+              @click="menuOpen = false"
+            >
+              {{ link.label }}
+            </NuxtLink>
+            <span
+              v-else
+              class="inline-flex items-center gap-2 text-sm text-slate-500"
+              aria-disabled="true"
+            >
+              <span>{{ link.label }}</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                Bientot
+              </span>
+            </span>
+          </template>
           <NuxtLink
             to="/account"
             class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
@@ -136,7 +159,7 @@ const navLinks = [
   { href: '/horoscope-du-jour', label: 'Horoscope du jour' },
   { href: '/#how-it-works', label: 'Comment ca marche' },
   { href: '/#pricing', label: 'Tarifs' },
-  { href: '#', label: 'Blog' },
+  { href: '#', label: 'Blog', disabled: true, disabledLabel: 'Le blog arrive bientot' },
 ]
 
 function updateScrolledState() {
