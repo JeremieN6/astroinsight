@@ -46,6 +46,9 @@ export default defineNuxtConfig({
     // Public (exposed to client)
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+      stripeOneShotLink: process.env.NUXT_PUBLIC_STRIPE_ONE_SHOT_LINK || '',
+      stripeSubMonthlyLink: process.env.NUXT_PUBLIC_STRIPE_SUB_MONTHLY_LINK || '',
+      stripeSubYearlyLink: process.env.NUXT_PUBLIC_STRIPE_SUB_YEARLY_LINK || '',
     },
   },
 

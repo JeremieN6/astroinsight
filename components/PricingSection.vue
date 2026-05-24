@@ -5,20 +5,20 @@
       <p class="eyebrow reveal-on-scroll mb-4">Tarifs</p>
       <h2 class="section-title reveal-on-scroll mx-auto max-w-2xl">Choisissez votre destinée</h2>
       <p class="reveal-on-scroll mx-auto mt-6 max-w-xl text-lg text-slate-300">
-        Commencez gratuitement, débloquez votre rapport complet pour aller plus loin.
+        Commencez avec un rapport essentiel offert, approfondissez avec votre theme natal integral ou passez au suivi premium.
       </p>
     </div>
 
-    <div class="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
       <div
         class="reveal-on-scroll glass-panel relative flex flex-col overflow-hidden px-7 py-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
       >
         <div class="mb-6">
-          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Aperçu Gratuit</p>
+          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Constellation Decouverte</p>
           <div class="mt-3 flex items-end gap-2">
             <span class="font-display text-5xl text-white">0€</span>
           </div>
-          <p class="mt-2 text-sm text-slate-400">Découvrez les bases de votre thème natal</p>
+          <p class="mt-2 text-sm text-slate-400">Rapport essentiel offert pour reveler votre signature astrale</p>
         </div>
 
         <ul class="flex-1 space-y-3">
@@ -50,8 +50,45 @@
             to="/rapport"
             class="block w-full rounded-full border border-white/15 bg-white/5 py-3.5 text-center text-sm font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
           >
-            Commencer gratuitement
+            Obtenir mon rapport essentiel
           </NuxtLink>
+        </div>
+      </div>
+
+      <div
+        class="reveal-on-scroll glass-panel relative flex flex-col overflow-hidden border border-white/15 px-7 py-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
+      >
+        <div class="mb-6">
+          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Carte Natale Integrale</p>
+          <div class="mt-3 flex items-end gap-2">
+            <span class="font-display text-5xl text-white">9,99€</span>
+            <span class="mb-1.5 text-sm text-slate-400">paiement unique</span>
+          </div>
+          <p class="mt-2 text-sm text-slate-400">Le theme natal complet a conserver, relire et telecharger</p>
+        </div>
+
+        <ul class="flex-1 space-y-3">
+          <li v-for="feat in oneShotFeatures" :key="feat" class="flex items-start gap-3 text-sm text-slate-300">
+            <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ feat }}
+          </li>
+        </ul>
+
+        <div class="mt-8">
+          <a
+            :href="oneShotBuyLink"
+            target="_blank"
+            rel="noopener"
+            class="block w-full rounded-full border border-white/15 bg-white/5 py-3.5 text-center text-sm font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
+          >
+            Obtenir mon rapport complet
+          </a>
         </div>
       </div>
 
@@ -67,16 +104,37 @@
         <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
 
         <div class="mb-6">
-          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Rapport Complet Premium</p>
-          <div class="mt-3 flex items-end gap-2">
-            <span class="font-display text-5xl text-white">9,99€</span>
-            <span class="mb-1.5 text-sm text-slate-400">paiement unique</span>
+          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Orbite Premium</p>
+          <div class="mt-4 inline-flex items-center rounded-full border border-white/15 bg-white/5 p-1 text-xs">
+            <button
+              type="button"
+              class="rounded-full px-3 py-1.5 font-semibold uppercase tracking-[0.16em] transition-colors"
+              :class="premiumBilling === 'monthly' ? 'bg-white text-slate-900' : 'text-slate-300 hover:text-white'"
+              @click="premiumBilling = 'monthly'"
+            >
+              Mensuel
+            </button>
+            <button
+              type="button"
+              class="rounded-full px-3 py-1.5 font-semibold uppercase tracking-[0.16em] transition-colors"
+              :class="premiumBilling === 'yearly' ? 'bg-white text-slate-900' : 'text-slate-300 hover:text-white'"
+              @click="premiumBilling = 'yearly'"
+            >
+              Annuel
+            </button>
           </div>
-          <p class="mt-2 text-sm text-slate-400">Votre thème natal complet en 30+ pages</p>
+          <div class="mt-3 flex items-end gap-2">
+            <span class="font-display text-5xl text-white">{{ premiumPriceDisplay }}</span>
+            <span class="mb-1.5 text-sm text-slate-400">{{ premiumPriceSuffix }}</span>
+          </div>
+          <p class="mt-2 text-sm text-slate-400">{{ premiumDescription }}</p>
+          <p v-if="premiumBilling === 'yearly'" class="mt-2 text-xs text-emerald-300">
+            Soit l'equivalent de 12,42€/mois, avec une reduction proche de 35%.
+          </p>
         </div>
 
         <ul class="flex-1 space-y-3">
-          <li v-for="feat in premiumFeatures" :key="feat" class="flex items-start gap-3 text-sm text-slate-300">
+          <li v-for="feat in subscriptionFeatures" :key="feat" class="flex items-start gap-3 text-sm text-slate-300">
             <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path
                 fill-rule="evenodd"
@@ -90,57 +148,16 @@
 
         <div class="mt-8">
           <a
-            :href="oneShotStripeLink"
+            :href="activeSubscriptionLink"
             target="_blank"
             rel="noopener"
             class="block w-full rounded-full bg-[linear-gradient(135deg,#7c3aed_0%,#a855f7_50%,#d97706_100%)] py-3.5 text-center text-sm font-bold uppercase tracking-[0.18em] text-white shadow-[0_0_30px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(124,58,237,0.7)]"
           >
-            Obtenir mon rapport complet
+            {{ premiumCtaLabel }}
           </a>
         </div>
 
-        <p class="mt-4 text-center text-xs text-slate-500">🛡️ Garantie satisfait ou remboursé 7 jours</p>
-      </div>
-
-      <div
-        class="reveal-on-scroll glass-panel relative flex flex-col overflow-hidden border border-cyan-400/30 px-7 py-8 shadow-[0_0_50px_rgba(34,211,238,0.16)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_70px_rgba(34,211,238,0.24)]"
-      >
-        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
-
-        <div class="mb-6">
-          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Abonnement Premium</p>
-          <div class="mt-3 flex items-end gap-2">
-            <span class="font-display text-5xl text-white">19€</span>
-            <span class="mb-1.5 text-sm text-slate-400">/mois</span>
-          </div>
-          <p class="mt-2 text-sm text-slate-400">Votre guidance quotidienne complete, evolutive et personnalisee</p>
-        </div>
-
-        <ul class="flex-1 space-y-3">
-          <li v-for="feat in monthlyFeatures" :key="feat" class="flex items-start gap-3 text-sm text-slate-300">
-            <svg class="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            {{ feat }}
-          </li>
-        </ul>
-
-        <div class="mt-8">
-          <a
-            :href="monthlyStripeLink"
-            target="_blank"
-            rel="noopener"
-            class="block w-full rounded-full border border-cyan-200/60 bg-[linear-gradient(135deg,#0891b2_0%,#06b6d4_45%,#67e8f9_100%)] py-3.5 text-center text-sm font-bold uppercase tracking-[0.18em] text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(34,211,238,0.45)]"
-          >
-            Passer en premium mensuel
-          </a>
-        </div>
-
-        <p class="mt-4 text-center text-xs text-slate-500">Resiliable a tout moment</p>
+        <p class="mt-4 text-center text-xs text-slate-500">Le plan annuel est le plus rentable si vous voulez suivre vos cycles sur la duree.</p>
       </div>
     </div>
 
@@ -158,43 +175,57 @@
 
 <script setup lang="ts">
 const config = useRuntimeConfig()
+const premiumBilling = ref<'monthly' | 'yearly'>('monthly')
 
-const oneShotStripeLink = config.public.stripeOneShotLink || 'https://buy.stripe.com/28E8wQ5Pm7uT36qfF9ePi0p'
-const monthlyStripeLink = config.public.stripeSubMonthlyLink || oneShotStripeLink
+const oneShotBuyLink = config.public.stripeOneShotLink || 'https://buy.stripe.com/28E8wQ5Pm7uT36qfF9ePi0p'
+const subscriptionMonthlyLink = config.public.stripeSubMonthlyLink || oneShotBuyLink
+const subscriptionYearlyLink = config.public.stripeSubYearlyLink || subscriptionMonthlyLink
+
+const premiumPriceDisplay = computed(() => (premiumBilling.value === 'monthly' ? '19€' : '149€'))
+const premiumPriceSuffix = computed(() => (premiumBilling.value === 'monthly' ? '/ mois' : '/ an'))
+const premiumDescription = computed(() =>
+  premiumBilling.value === 'monthly'
+    ? 'Le suivi vivant: horoscope enrichi, transits, mensuels et alertes'
+    : 'Le suivi vivant en formule annuelle: meme experience premium, tarif optimise'
+)
+const premiumCtaLabel = computed(() =>
+  premiumBilling.value === 'monthly' ? 'Passer au premium mensuel' : 'Passer au premium annuel'
+)
+const activeSubscriptionLink = computed(() =>
+  premiumBilling.value === 'monthly' ? subscriptionMonthlyLink : subscriptionYearlyLink
+)
 
 const freeFeatures = [
   'Signe solaire, lunaire et ascendant',
-  'Résumé de votre personnalité',
-  '3 insights astrologiques',
-  'Aperçu de vos forces',
+  'Mini portrait astrologique structure',
+  'Forces dominantes et points de vigilance',
+  'Rapport essentiel telechargeable',
 ]
 
 const lockedFreeFeatures = [
   'Analyse des 10 planètes',
   'Les 12 maisons astrologiques',
   'Aspects planétaires complets',
-  'Rapport PDF 30+ pages',
+  'Transits et cycles du moment',
 ]
 
-const premiumFeatures = [
+const oneShotFeatures = [
   'Position exacte de vos 10 planètes',
   'Les 12 maisons astrologiques',
   'Tous les aspects planétaires',
-  'Ascendant & planètes maîtresses',
+  'Lecture de personnalité approfondie',
   'Compatibilité amoureuse & relationnelle',
-  'Transit annuel personnalisé',
-  'Lune Noire & Chiron',
   'Rapport PDF premium 30+ pages',
   'Paiement unique, sans abonnement',
 ]
 
-const monthlyFeatures = [
-  'Horoscope quotidien premium personnalise',
-  'Interpretations approfondies de vos transits',
-  'Tendances de la semaine et du mois',
-  'Conseils actionnables amour, travail, energie',
-  'Priorite sur les nouvelles fonctionnalites',
-  'Acces continu tant que l abonnement est actif',
+const subscriptionFeatures = [
+  'Horoscope quotidien avance et plus detaille',
+  'Historique et tendances sur plusieurs jours',
+  'Transits du moment et fenetres favorables',
+  'Rapport mensuel et alertes importantes',
+  'Priorite sur les nouvelles fonctions premium',
+  'Pensé pour la retention, pas juste un document',
 ]
 
 const trustBadges = [
