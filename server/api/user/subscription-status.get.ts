@@ -1,8 +1,9 @@
-import { desc, eq } from 'drizzle-orm'
-import { subscriptions, users } from '../../../db/schema'
+import { and, desc, eq, inArray, isNull } from 'drizzle-orm'
+import { invoices, subscriptions, users } from '../../../db/schema'
 import { getDbOrThrow } from '../../utils/db'
 
 const PREMIUM_STATUSES = new Set(['active', 'trialing'])
+const PAID_INVOICE_STATUSES = ['paid', 'succeeded'] as const
 
 export default defineEventHandler(async (event) => {
   const email = String(getQuery(event).email || '').trim().toLowerCase()
@@ -30,23 +31,46 @@ export default defineEventHandler(async (event) => {
     .orderBy(desc(subscriptions.updatedAt))
     .limit(1)
 
-  if (!subscription) {
+  const [oneShotInvoice] = await db
+    .select()
+    .from(invoices)
+    .where(and(
+      eq(invoices.userId, user.id),
+      isNull(invoices.subscriptionId),
+      inArray(invoices.status, PAID_INVOICE_STATUSES),
+    ))
+    .orderBy(desc(invoices.createdAt))
+    .limit(1)
+
+  if (!subscription && !oneShotInvoice) {
     return {
       email,
       isPremium: false,
-      reason: 'subscription_not_found',
+      reason: 'premium_entitlement_not_found',
       subscription: null,
+      oneShotInvoice: null,
     }
   }
 
   const now = Date.now()
-  const isValidWindow = !subscription.currentPeriodEnd || subscription.currentPeriodEnd.getTime() >= now
-  const isPremium = PREMIUM_STATUSES.has(subscription.status) && isValidWindow
+  const hasActiveSubscription = Boolean(subscription)
+    && PREMIUM_STATUSES.has(subscription.status)
+    && (!subscription.currentPeriodEnd || subscription.currentPeriodEnd.getTime() >= now)
+
+  const hasPaidOneShot = Boolean(oneShotInvoice)
+
+  const isPremium = hasActiveSubscription || hasPaidOneShot
+  const reason = hasActiveSubscription
+    ? 'ok_subscription'
+    : hasPaidOneShot
+      ? 'ok_one_shot'
+      : 'inactive_or_expired'
 
   return {
     email,
     isPremium,
-    reason: isPremium ? 'ok' : 'inactive_or_expired',
-    subscription,
+    reason,
+    subscription: subscription || null,
+    oneShotInvoice: oneShotInvoice || null,
   }
 })
