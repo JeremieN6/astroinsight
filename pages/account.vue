@@ -8,16 +8,16 @@
             Mon <span class="text-amber-300">espace</span>
           </h1>
           <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-            Retrouve ton statut premium, ton abonnement actif et l'email lie a tes achats.
+            Retrouve ton statut premium, ton abonnement actif et l'email lié à tes achats.
           </p>
         </header>
 
         <div class="glass-panel border border-white/15 p-6 sm:p-8">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Identite</p>
+              <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Identité</p>
               <p class="mt-1 text-sm text-slate-200">
-                {{ activeEmail || 'Non connecte' }}
+                {{ activeEmail || 'Non connecté' }}
               </p>
             </div>
 
@@ -47,13 +47,13 @@
               </button>
             </div>
             <p class="mt-2 text-xs text-slate-500">
-              Utilise le meme email que celui saisi lors du paiement Stripe.
+              Utilise le même email que celui saisi lors du paiement Stripe.
             </p>
           </form>
 
           <div class="mt-8 grid gap-4 sm:grid-cols-2">
             <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Plan detecte</p>
+              <p class="text-xs uppercase tracking-[0.16em] text-slate-400">Plan détecté</p>
               <p class="mt-2 text-sm text-white">{{ planLabel }}</p>
             </div>
             <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -79,7 +79,7 @@
               class="rounded-full border border-rose-300/25 bg-rose-400/10 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-rose-100 transition-colors hover:bg-rose-400/20"
               @click="disconnect"
             >
-              Se deconnecter
+              Se déconnecter
             </button>
 
             <NuxtLink
@@ -163,8 +163,8 @@ async function refreshAccount() {
 
   try {
     const [profileData, statusData] = await Promise.all([
-      $fetch<ProfileResponse>('/api/user/profile', { query: { email } }),
-      $fetch<SubscriptionStatusResponse>('/api/user/subscription-status', { query: { email } }),
+      $fetch('/api/user/profile', { query: { email } }) as Promise<ProfileResponse>,
+      $fetch('/api/user/subscription-status', { query: { email } }) as Promise<SubscriptionStatusResponse>,
     ])
 
     profile.value = profileData
