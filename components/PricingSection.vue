@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+    <div class="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div
         class="reveal-on-scroll glass-panel relative flex flex-col overflow-hidden px-7 py-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
       >
@@ -90,7 +90,7 @@
 
         <div class="mt-8">
           <a
-            :href="stripeLink"
+            :href="oneShotStripeLink"
             target="_blank"
             rel="noopener"
             class="block w-full rounded-full bg-[linear-gradient(135deg,#7c3aed_0%,#a855f7_50%,#d97706_100%)] py-3.5 text-center text-sm font-bold uppercase tracking-[0.18em] text-white shadow-[0_0_30px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(124,58,237,0.7)]"
@@ -100,6 +100,47 @@
         </div>
 
         <p class="mt-4 text-center text-xs text-slate-500">🛡️ Garantie satisfait ou remboursé 7 jours</p>
+      </div>
+
+      <div
+        class="reveal-on-scroll glass-panel relative flex flex-col overflow-hidden border border-cyan-400/30 px-7 py-8 shadow-[0_0_50px_rgba(34,211,238,0.16)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_70px_rgba(34,211,238,0.24)]"
+      >
+        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
+
+        <div class="mb-6">
+          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Abonnement Premium</p>
+          <div class="mt-3 flex items-end gap-2">
+            <span class="font-display text-5xl text-white">19€</span>
+            <span class="mb-1.5 text-sm text-slate-400">/mois</span>
+          </div>
+          <p class="mt-2 text-sm text-slate-400">Votre guidance quotidienne complete, evolutive et personnalisee</p>
+        </div>
+
+        <ul class="flex-1 space-y-3">
+          <li v-for="feat in monthlyFeatures" :key="feat" class="flex items-start gap-3 text-sm text-slate-300">
+            <svg class="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ feat }}
+          </li>
+        </ul>
+
+        <div class="mt-8">
+          <a
+            :href="monthlyStripeLink"
+            target="_blank"
+            rel="noopener"
+            class="block w-full rounded-full border border-cyan-200/60 bg-[linear-gradient(135deg,#0891b2_0%,#06b6d4_45%,#67e8f9_100%)] py-3.5 text-center text-sm font-bold uppercase tracking-[0.18em] text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(34,211,238,0.45)]"
+          >
+            Passer en premium mensuel
+          </a>
+        </div>
+
+        <p class="mt-4 text-center text-xs text-slate-500">Resiliable a tout moment</p>
       </div>
     </div>
 
@@ -116,7 +157,10 @@
 </template>
 
 <script setup lang="ts">
-const stripeLink = 'https://buy.stripe.com/28E8wQ5Pm7uT36qfF9ePi0p'
+const config = useRuntimeConfig()
+
+const oneShotStripeLink = config.public.stripeOneShotLink || 'https://buy.stripe.com/28E8wQ5Pm7uT36qfF9ePi0p'
+const monthlyStripeLink = config.public.stripeSubMonthlyLink || oneShotStripeLink
 
 const freeFeatures = [
   'Signe solaire, lunaire et ascendant',
@@ -142,6 +186,15 @@ const premiumFeatures = [
   'Lune Noire & Chiron',
   'Rapport PDF premium 30+ pages',
   'Paiement unique, sans abonnement',
+]
+
+const monthlyFeatures = [
+  'Horoscope quotidien premium personnalise',
+  'Interpretations approfondies de vos transits',
+  'Tendances de la semaine et du mois',
+  'Conseils actionnables amour, travail, energie',
+  'Priorite sur les nouvelles fonctionnalites',
+  'Acces continu tant que l abonnement est actif',
 ]
 
 const trustBadges = [
