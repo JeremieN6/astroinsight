@@ -28,8 +28,21 @@ export const useReportStore = defineStore('report', {
 
     setUserEmail(email: string) {
       this.userEmail = email.trim().toLowerCase()
-      if (import.meta.client && this.userEmail) {
-        localStorage.setItem('Stellara_email', this.userEmail)
+      if (import.meta.client) {
+        if (this.userEmail) {
+          localStorage.setItem('Stellara_email', this.userEmail)
+        } else {
+          localStorage.removeItem('Stellara_email')
+        }
+      }
+    },
+
+    clearSession() {
+      this.userEmail = ''
+      this.isPremium = false
+      if (import.meta.client) {
+        localStorage.removeItem('Stellara_email')
+        localStorage.removeItem('Stellara_premium')
       }
     },
 
