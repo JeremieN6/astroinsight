@@ -44,6 +44,31 @@
       </div>
 
       <div class="flex items-center gap-3">
+        <NuxtLink
+          to="/account"
+          class="hidden items-center gap-2 rounded-full border px-3.5 py-2 text-xs uppercase tracking-[0.14em] transition-colors sm:inline-flex"
+          :class="isAuthenticated
+            ? 'border-emerald-400/35 bg-emerald-400/10 text-emerald-200 hover:bg-emerald-400/15'
+            : 'border-white/10 bg-white/5 text-slate-300 hover:text-white'"
+        >
+          <span class="h-1.5 w-1.5 rounded-full" :class="isAuthenticated ? 'bg-emerald-300' : 'bg-slate-400'" />
+          {{ isAuthenticated ? accountLabel : 'Mon compte' }}
+        </NuxtLink>
+
+        <NuxtLink
+          to="/#pricing"
+          class="hidden items-center gap-2 rounded-full bg-[linear-gradient(135deg,#7c3aed,#a855f7_50%,#f59e0b)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(124,58,237,0.6)] sm:inline-flex"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <polygon
+              points="12,2 15,9 22,9 16.5,13.5 18.5,21 12,17 5.5,21 7.5,13.5 2,9 9,9"
+              fill="currentColor"
+              opacity="0.9"
+            />
+          </svg>
+          Obtenir mon rapport
+        </NuxtLink>
+
         <button
           class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white md:hidden"
           aria-label="Menu"
@@ -71,6 +96,20 @@
           >
             {{ link.label }}
           </NuxtLink>
+          <NuxtLink
+            to="/account"
+            class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
+            @click="menuOpen = false"
+          >
+            {{ isAuthenticated ? `Mon compte (${accountLabel})` : 'Mon compte' }}
+          </NuxtLink>
+          <NuxtLink
+            to="/#pricing"
+            class="inline-flex justify-center rounded-full bg-[linear-gradient(135deg,#7c3aed,#a855f7_50%,#f59e0b)] px-5 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all duration-300"
+            @click="menuOpen = false"
+          >
+            Obtenir mon rapport
+          </NuxtLink>
         </nav>
       </div>
     </Transition>
@@ -82,21 +121,58 @@ import { onMounted, onUnmounted } from 'vue'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
+const profileFirstName = ref('')
+const reportStore = useReportStore()
+
+const isAuthenticated = computed(() => Boolean(reportStore.userEmail))
+const accountLabel = computed(() => {
+  if (profileFirstName.value) return profileFirstName.value
+  const email = reportStore.userEmail || ''
+  if (!email.includes('@')) return 'Mon compte'
+  return email.split('@')[0]
+})
 
 const navLinks = [
+  { href: '/horoscope-du-jour', label: 'Horoscope du jour' },
   { href: '/#how-it-works', label: 'Comment ca marche' },
-  { href: '/#pricing', label: 'Tarif' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/#pricing', label: 'Tarifs' },
+  { href: '#', label: 'Blog' },
 ]
 
 function updateScrolledState() {
   isScrolled.value = window.scrollY > 8
 }
 
+async function hydrateProfileName() {
+  const email = reportStore.userEmail
+  if (!email) {
+    profileFirstName.value = ''
+    return
+  }
+
+  try {
+    const response = await ($fetch('/api/user/profile', {
+      query: { email },
+    }) as Promise<{ user: { firstName: string | null } | null }>)
+    profileFirstName.value = response?.user?.firstName || ''
+  } catch {
+    profileFirstName.value = ''
+  }
+}
+
 onMounted(() => {
+  reportStore.initFromStorage()
   updateScrolledState()
+  hydrateProfileName()
   window.addEventListener('scroll', updateScrolledState, { passive: true })
 })
+
+watch(
+  () => reportStore.userEmail,
+  () => {
+    hydrateProfileName()
+  },
+)
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateScrolledState)
