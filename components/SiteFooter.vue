@@ -48,6 +48,9 @@
             <li>
               <NuxtLink to="/horoscope-du-jour" class="text-sm text-slate-400 transition hover:text-white">Horoscope du jour</NuxtLink>
             </li>
+            <li>
+              <NuxtLink to="/blog" class="text-sm text-slate-400 transition hover:text-white">Blog</NuxtLink>
+            </li>
           </ul>
         </div>
 

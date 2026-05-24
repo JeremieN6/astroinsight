@@ -29,12 +29,14 @@
 - [x] Tables JS pretes pour Neon Postgres (`users_js`, `plans_js`, `subscriptions_js`, `invoices_js`)
 - [x] Endpoints compte/abonnement: `GET /api/user/profile`, `GET /api/user/subscription-status`
 - [x] Webhook Stripe JS: `POST /api/stripe/webhook` avec verification signature
+- [x] Section blog Nuxt ajoutee avec source JSON statique (`data/blog.json`) et routes `pages/blog/*`
 
 ### Prochaines etapes :
 - [ ] Generer/appliquer les migrations Drizzle pour les nouvelles tables JS
 - [ ] Seed des plans Stripe dans `plans_js`
 - [ ] Connecter l UI premium a `GET /api/user/subscription-status`
 - [ ] Migrer les endpoints legacy `/api/estimation*` vers Nitro
+- [ ] Enrichir le blog avec une mise en avant croisee depuis les pages de conversion si besoin
 
 ---
 

@@ -86,7 +86,7 @@ const menuOpen = ref(false)
 const navLinks = [
   { href: '/#how-it-works', label: 'Comment ca marche' },
   { href: '/#pricing', label: 'Tarif' },
-  { href: '#', label: 'Blog' },
+  { href: '/blog', label: 'Blog' },
 ]
 
 function updateScrolledState() {
