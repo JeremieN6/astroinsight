@@ -60,8 +60,8 @@ const benefits = [
   {
     icon: '🔭',
     glow: 'from-violet-500/20 to-purple-400/5',
-    title: 'IA astro-experte',
-    description: 'Notre IA analyse la position combinée de 10+ planètes et 12 maisons pour une lecture d\'une précision inégalée.',
+    title: 'Stellara astro-experte',
+    description: 'Stellara analyse la position combinée de 10+ planètes et 12 maisons pour une lecture d\'une précision inégalée.',
     delay: 100,
   },
   {

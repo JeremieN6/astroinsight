@@ -82,8 +82,8 @@ const steps = [
   {
     number: '02',
     icon: '⚡',
-    title: 'Notre IA calcule votre thème natal',
-    description: 'Notre algorithme de précision calcule la position exacte de chaque planète au moment de votre naissance.',
+    title: 'Stellara calcule votre thème natal',
+    description: 'Stellara, avec son algorithme de précision, calcule la position exacte de chaque planète au moment de votre naissance.',
   },
   {
     number: '03',

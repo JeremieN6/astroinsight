@@ -21,7 +21,7 @@
           </h1>
 
           <p class="max-w-xl text-lg leading-8 text-slate-300">
-            Générez votre rapport natal complet via IA : positions planétaires, maisons astrologiques et analyse personnalisée en quelques secondes.
+            Générez votre rapport natal complet : positions planétaires, maisons astrologiques et analyse personnalisée en quelques secondes.
           </p>
 
           <div id="rapport" class="flex scroll-mt-24 flex-col gap-4 sm:flex-row sm:items-center">
