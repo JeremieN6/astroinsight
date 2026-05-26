@@ -160,7 +160,8 @@ const props = defineProps<{
   isPremium: boolean
 }>()
 
-const stripeLink = 'https://buy.stripe.com/28E8wQ5Pm7uT36qfF9ePi0p'
+const config = useRuntimeConfig()
+const stripeLink = config.public.stripeOneShotLink || '/#pricing'
 
 const planetEmoji: Record<string, string> = {
   Soleil: '☀',
