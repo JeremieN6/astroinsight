@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody<ReportRequest>(event)
 
   // Validate input
-  if (!body.birthDate || !body.lat || !body.lon) {
+  if (!body.birthDate || !Number.isFinite(body.lat) || !Number.isFinite(body.lon)) {
     throw createError({ statusCode: 400, statusMessage: 'Missing required fields' })
   }
 

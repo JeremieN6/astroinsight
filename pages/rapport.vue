@@ -110,7 +110,8 @@
                     class="cursor-pointer px-4 py-3 text-sm text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                     @click="selectCity(r)"
                   >
-                    {{ r.display_name }}
+                    <p class="font-medium text-white">{{ formatGeoPrimary(r) }}</p>
+                    <p class="mt-0.5 text-xs text-slate-400">{{ formatGeoSecondary(r) }}</p>
                   </li>
                 </ul>
               </div>
@@ -186,11 +187,47 @@ const form = reactive({
 })
 
 const cityQuery = ref('')
-const geoResults = ref<Array<{ place_id: string; display_name: string; lat: string; lon: string }>>([])
+
+interface GeoResult {
+  place_id: string
+  display_name: string
+  lat: string
+  lon: string
+  addresstype?: string
+  type?: string
+  address?: {
+    city?: string
+    town?: string
+    village?: string
+    municipality?: string
+    hamlet?: string
+    suburb?: string
+    county?: string
+    state?: string
+    postcode?: string
+    country?: string
+  }
+}
+
+const geoResults = ref<GeoResult[]>([])
 const geoLoading = ref(false)
 let geoTimer: ReturnType<typeof setTimeout> | null = null
 
+const geoAllowedTypes = new Set([
+  'city',
+  'town',
+  'village',
+  'municipality',
+  'hamlet',
+  'suburb',
+  'quarter',
+])
+
 function debouncedGeoSearch() {
+  form.lat = null
+  form.lon = null
+  form.city = ''
+
   if (geoTimer) clearTimeout(geoTimer)
   geoTimer = setTimeout(geoSearch, 350)
 }
@@ -200,10 +237,16 @@ async function geoSearch() {
   if (q.length < 2) { geoResults.value = []; return }
   geoLoading.value = true
   try {
-    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&addressdetails=0`, {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=8&addressdetails=1`, {
       headers: { 'Accept-Language': 'fr' },
     })
-    geoResults.value = await res.json()
+    const allResults = await res.json() as GeoResult[]
+    const preciseResults = allResults.filter((result) => {
+      const type = (result.addresstype || result.type || '').toLowerCase()
+      return geoAllowedTypes.has(type)
+    })
+
+    geoResults.value = preciseResults.length > 0 ? preciseResults.slice(0, 5) : allResults.slice(0, 5)
   } catch {
     geoResults.value = []
   } finally {
@@ -211,16 +254,50 @@ async function geoSearch() {
   }
 }
 
-function selectCity(r: { place_id: string; display_name: string; lat: string; lon: string }) {
+function selectCity(r: GeoResult) {
   form.lat = parseFloat(r.lat)
   form.lon = parseFloat(r.lon)
-  form.city = r.display_name
-  cityQuery.value = r.display_name
+  form.city = formatGeoLabel(r)
+  cityQuery.value = formatGeoLabel(r)
   geoResults.value = []
 }
 
+function formatGeoPrimary(r: GeoResult): string {
+  return (
+    r.address?.city ||
+    r.address?.town ||
+    r.address?.village ||
+    r.address?.municipality ||
+    r.address?.hamlet ||
+    r.address?.suburb ||
+    r.display_name.split(',')[0]?.trim() ||
+    r.display_name
+  )
+}
+
+function formatGeoSecondary(r: GeoResult): string {
+  const primary = formatGeoPrimary(r).toLowerCase()
+  const segments = [
+    r.address?.county,
+    r.address?.state,
+    r.address?.postcode,
+    r.address?.country,
+  ]
+
+  const unique = Array.from(new Set(segments.filter(Boolean))).filter(
+    (segment) => segment!.toLowerCase() !== primary,
+  )
+
+  return unique.join(', ')
+}
+
+function formatGeoLabel(r: GeoResult): string {
+  const secondary = formatGeoSecondary(r)
+  return secondary ? `${formatGeoPrimary(r)}, ${secondary}` : formatGeoPrimary(r)
+}
+
 async function calculate() {
-  if (!form.lat || !form.lon) {
+  if (!Number.isFinite(form.lat) || !Number.isFinite(form.lon)) {
     alert('Veuillez sélectionner votre lieu de naissance dans la liste.')
     return
   }

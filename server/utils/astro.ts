@@ -69,6 +69,11 @@ function normalizeDegrees(deg: number): number {
   return wrapped < 0 ? wrapped + 360 : wrapped
 }
 
+function normalizeSignedDegrees(deg: number): number {
+  const wrapped = normalizeDegrees(deg)
+  return wrapped > 180 ? wrapped - 360 : wrapped
+}
+
 /** Solar longitude (ecliptic degrees) */
 export function solarLongitude(jd: number): number {
   const d = J2000(jd)
@@ -142,14 +147,23 @@ export function computeAscendant(jd: number, lat: number, lon: number): { sign: 
 
   // Ecliptic longitude of the eastern horizon intersection.
   const ascRad = Math.atan2(-Math.cos(theta), Math.sin(theta) * Math.cos(eps) + Math.tan(latRad) * Math.sin(eps))
-  let asc = normalizeDegrees(toDeg(ascRad))
+  const baseAsc = normalizeDegrees(toDeg(ascRad))
 
-  // Keep the ascendant on the eastern horizon branch.
-  if (Math.sin(theta) < 0) {
-    asc = normalizeDegrees(asc + 180)
-  }
+  // Keep the ascendant on the eastern horizon branch (rising side).
+  // Rising points are east of the meridian, so their hour angle is negative.
+  const baseHourAngle = hourAngleForEclipticLongitude(baseAsc, lst, eps)
+  const asc = baseHourAngle < 0 ? baseAsc : normalizeDegrees(baseAsc + 180)
 
   return degreeToSign(asc)
+}
+
+function hourAngleForEclipticLongitude(lambdaDeg: number, lstDeg: number, obliquityRad: number): number {
+  const lambdaRad = toRad(lambdaDeg)
+  const rightAscensionDeg = normalizeDegrees(
+    toDeg(Math.atan2(Math.sin(lambdaRad) * Math.cos(obliquityRad), Math.cos(lambdaRad))),
+  )
+
+  return normalizeSignedDegrees(lstDeg - rightAscensionDeg)
 }
 
 /** Build complete natal chart */
