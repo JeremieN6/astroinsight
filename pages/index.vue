@@ -6,7 +6,6 @@
     <PricingSection />
     <TestimonialsSection />
     <FaqSection />
-    <BlogSection />
     <CtaSection />
   </div>
 </template>
