@@ -29,7 +29,7 @@
 
         <section class="mt-10 space-y-6">
           <article
-            v-for="section in post.sections"
+            v-for="section in postSections"
             :key="section.sous_titre"
             class="glass-panel border border-white/10 p-6 sm:p-8"
           >
@@ -77,8 +77,35 @@ type BlogPost = {
 }
 
 const route = useRoute()
-const post = computed(() => {
-  return (blogPosts as BlogPost[]).find((entry) => entry.slug === route.params.slug)
+const config = useRuntimeConfig()
+
+const normalizedSlug = computed(() => {
+  const slugParam = route.params.slug
+  const rawSlug = Array.isArray(slugParam) ? slugParam[0] : slugParam
+  return String(rawSlug || '').trim().toLowerCase()
+})
+
+const allPosts = computed<BlogPost[]>(() => {
+  return Array.isArray(blogPosts) ? (blogPosts as BlogPost[]) : []
+})
+
+const post = computed<BlogPost | null>(() => {
+  if (!normalizedSlug.value) {
+    return null
+  }
+
+  return allPosts.value.find((entry) => String(entry.slug || '').toLowerCase() === normalizedSlug.value) || null
+})
+
+const safeSiteUrl = computed(() => {
+  const configuredUrl = String(config.public?.siteUrl || '').trim()
+  const fallbackUrl = 'https://stellara.sassify.fr'
+  const baseUrl = configuredUrl || fallbackUrl
+  return baseUrl.replace(/\/+$/, '')
+})
+
+const postSections = computed<BlogSection[]>(() => {
+  return Array.isArray(post.value?.sections) ? post.value.sections : []
 })
 
 if (!post.value) {
@@ -101,7 +128,7 @@ useHead(() => ({
   link: [
     {
       rel: 'canonical',
-      href: `${useRuntimeConfig().public.siteUrl}/blog/${post.value?.slug}`,
+      href: `${safeSiteUrl.value}/blog/${post.value?.slug}`,
     },
   ],
   script: post.value
@@ -114,8 +141,8 @@ useHead(() => ({
             headline: post.value.titre,
             description: post.value.metaDescription || post.value.intro,
             datePublished: post.value.date,
-            image: `${useRuntimeConfig().public.siteUrl}/og-image.jpg`,
-            mainEntityOfPage: `${useRuntimeConfig().public.siteUrl}/blog/${post.value.slug}`,
+            image: `${safeSiteUrl.value}/og-image.jpg`,
+            mainEntityOfPage: `${safeSiteUrl.value}/blog/${post.value.slug}`,
             author: {
               '@type': 'Organization',
               name: 'Stellara',
@@ -127,10 +154,16 @@ useHead(() => ({
 }))
 
 function formatDate(dateValue: string) {
+  const parsedDate = new Date(`${dateValue}T00:00:00`)
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return dateValue
+  }
+
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
-  }).format(new Date(`${dateValue}T00:00:00`))
+  }).format(parsedDate)
 }
 </script>

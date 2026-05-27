@@ -49,12 +49,13 @@
               <NuxtLink to="/horoscope-du-jour" class="text-sm text-slate-400 transition hover:text-white">Horoscope du jour</NuxtLink>
             </li>
             <li>
-              <span class="inline-flex cursor-not-allowed items-center gap-2 text-sm text-slate-500" aria-disabled="true" title="Le blog arrive bientôt">
+              <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white">
                 <span>Blog</span>
-                <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                  Bientôt
+                <span class="inline-flex items-center gap-1 rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-emerald-200">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-300" aria-hidden="true" />
+                  Nouveau
                 </span>
-              </span>
+              </NuxtLink>
             </li>
           </ul>
         </div>
